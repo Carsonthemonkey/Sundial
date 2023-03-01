@@ -1,0 +1,10 @@
+{
+  "manifest_version": 3,
+  "name": "Timezone Converter Sundial?",
+  "description": "Base Level Extension",
+  "version": "0.1",
+  "action": {
+    "default_popup": "popup/Timezone.html",
+    "default_icon": "images/hello_extensions.png"
+  }
+}
