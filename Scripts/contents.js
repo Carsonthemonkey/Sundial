@@ -22,7 +22,7 @@ function timeToDate(timeString){
     let readAllTimes = false
     //add hours to the date
     if(timeString.match(/P.?M.?/i)){
-        formattedDate += (parseInt(timeArray[0]) + 12) + ":"
+        formattedDate += (parseInt(timeArray[0])%12 + 12) + ":"
     }
     else{
         formattedDate += timeArray[0] + ":"
