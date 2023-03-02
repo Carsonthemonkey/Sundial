@@ -1,17 +1,16 @@
 {
   "manifest_version": 3,
-  "name": "Timezone Converter Sundial?",
+  "name": "Sundial",
   "description": "Base Level Extension",
   "version": "0.1",
   "action": {
-    "default_popup": "popup/Timezone.html",
+    "default_popup": "popup/popup.html",
     "default_icon": "images/hello_extensions.png"
   },
   "permissions": ["activeTab"],
   "content_scripts":[{
     "js" : ["scripts/contents.js"],
-    "matches" : ["https://developer.chrome.com/docs/extensions/*",
-    "https://developer.chrome.com/docs/webstore/*", "https://carsonthemonkey.github.io/", "https://www.cnn.com/2023/02/26/world/spacex-nasa-crew-6-launch-walkup-scn/index.html"]
+    "matches" : ["*://*/*"]
   }
     
   ]
