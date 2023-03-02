@@ -15,59 +15,47 @@ const timeMatchRegExp = /(\d{1,2})(:\d{2})?(:\d{2})?\s?(A.?M.?\s? | P.?M.?\s?)(U
 let replaced = document.body.innerHTML.replace(timeMatchRegExp, convertTime);
 document.body.innerHTML = replaced;
 
-// for(pg of paragraphs){
-//     console.log(pg.innerHTML);
-//     pg.innerHTML = pg.innerHTML.replace(timeMatchRegExp, "[THIS IS A TIME]");
-// }
-
-function convertTime(timeString){
-    let now = new Date();
-    // convert string to date
-    let timeArray = timeString.split(/:|\s/);
-    // console.log(`Hours ${timeArray[0]}`)
-
-    let timeZone = now.toLocaleString("en-US", {timeZone : timeArray[timeArray.length - 1]})
-    let convertedTime = new Date();
-    console.log("converted time pre-convert: " + convertedTime)
-
+function timeToDate(timeString){
+    let timeArray = timeString.split(/:|\s/)
+    let formattedDate = "01 Jan 2023 "
+    console.log("timeArray: " + timeArray)
+    let readAllTimes = false
+    //add hours to the date
     if(timeString.match(/P.?M.?/i)){
-        convertedTime.setHours(timeArray[0] + 12);
+        formattedDate += (parseInt(timeArray[0]) + 12) + ":"
     }
     else{
-        convertedTime.setHours(timeArray[0]);
-    }
-    
-
-    // This is a little messy, since it will evaluate these expressions unnecessarily
-    // maybe we could do this by mapping the different setMinutes etc. functions to a map, and then using the index
-    // to access them that way. that way we can just break out of a loop when one is NaN.
-    let index = 1
-    console.log("converted time post-hours: " + convertedTime)
-    if(!isNaN(parseInt(timeArray[index]))){
-        // console.log(`minutes: ${timeArray[1]}`)
-        convertedTime.setMinutes(timeArray[index])
-        index++;
+        formattedDate += timeArray[0] + ":"
     }
 
-    if(!isNaN(parseInt(timeArray[index]))){
-        convertedTime.setSeconds(timeArray[index])
-        index++;
+    //add minutes
+    if(!isNaN(timeArray[1]) && !readAllTimes){
+        formattedDate += timeArray[1] + ":"
     }
-    
-    if(!isNaN(parseInt(timeArray[index]))){
-        convertedTime.setMilliseconds(timeArray[index])
-        index++;
+    else{
+        formattedDate += "00:"
+        readAllTimes = true
     }
 
-    convertedTime.setUTCHours(0);
+    //add seconds
+    if(!isNaN(timeArray[2]) && !readAllTimes){
+        formattedDate += timeArray[2] + ":"
+    }
+    else{
+        formattedDate += "00 "
+        readAllTimes = true
+    }
 
-    
+    formattedDate += timeArray[timeArray.length - 1]
+    console.log("formatted date: " + formattedDate);
+    let date = new Date(Date.parse(formattedDate));
+    return date
+}
 
-    // let formattedDate = convertedTime.toLocaleString("en-US", {timeZone : timeArray[index + 1]})
-    // convertedTime = new Date(formattedDate);
-
-    console.log("final time: " + convertedTime);
-
-    // console.log(timeString);
-    return "<span class=\"time-replace\">[TIME]</span>";
+function convertTime(timeString){
+    // let now = new Date();
+    let date = timeToDate(timeString);
+    console.log(typeof(date))
+    console.log(`${date.toLocaleTimeString()}`)
+    return `<span class=\"time-replace\">${date.toLocaleTimeString()}</span>`;
 }
