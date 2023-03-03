@@ -1,5 +1,9 @@
 const timeZones = {
+    "MOUNTAIN" : "MST",
+    "GREENWICH" : "GMT",
+    "INDIAN" : "UTC+5:30",
     "CENTRAL" : "CST",
+    "CT" : "CST",
     "AKST" : "UTC-9",
     "HST" : "UTC-10",
     "ET" : "EST",
@@ -35,7 +39,7 @@ function sundial(){
     document.head.appendChild(style)
     // const supportedElements = "p, h1, h2, h3, h4, h5, h6, a, span, b, div p";
     const supportedElements = "*"
-    const timeMatchRegExp = /(\d{1,2})(:\d{2})?(:\d{2})?\s?(A.?M.?\s? | P.?M.?\s?)(UTC|GMT|ES?T|CST|MST|PST|AKST|HST|AEDT|BST|EASTERN|PACIFIC|CENTRAL)/gi;
+    const timeMatchRegExp = /(\d{1,2})(:\d{2})?(:\d{2})?\s?(A.?M.?\s? | P.?M.?\s?)(UTC|GMT|ES?T|CST|MST|PS?T|AKST|HST|AEDT|BST|EASTERN|PACIFIC|CENTRAL|JST|CT|IST|NZDT|MSK|CET|MOUNTAIN|GREENWICH|INDIAN)/gi;
     // let replaced = document.body.innerHTML.replace(timeMatchRegExp, convertTime);
     const elements = document.body.querySelectorAll(supportedElements);
     //console.log(elements)
