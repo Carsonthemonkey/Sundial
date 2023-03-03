@@ -10,8 +10,10 @@
   "permissions": ["activeTab"],
   "content_scripts":[{
     "js" : ["scripts/contents.js"],
-    "matches" : ["*://*/*"]
+    "matches" : ["*://*/*"],
+    "run_at" : "document_end"
   }
+  
     
   ]
 }
