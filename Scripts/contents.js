@@ -15,6 +15,7 @@ const timeZones = {
     "BST" : "UTC+1",
 }
 
+
 const supportedTimezones = ["UTC","GMT","EST","CST","MST","PST","GMT","UTC"];
 
 const style = document.createElement('style');
@@ -26,18 +27,30 @@ style.textContent = `
     padding: 0.3%;
 }
     `
-console.log("Sundial startup")
-document.head.appendChild(style)
-const supportedElements = "p, h1, h2, h3, h4, h5, h6, a, span, b, div p";
-const timeMatchRegExp = /(\d{1,2})(:\d{2})?(:\d{2})?\s?(A.?M.?\s? | P.?M.?\s?)(UTC|GMT|ES?T|CST|MST|PST|AKST|HST|AEDT|BST|EASTERN|PACIFIC|CENTRAL)/gi;
-// let replaced = document.body.innerHTML.replace(timeMatchRegExp, convertTime);
-const elements = document.querySelectorAll(supportedElements);
-console.log(elements)
-for(let element of elements){
-    const text = element.innerHTML;
-    const replaced = text.replace(timeMatchRegExp, convertTime);
-    if(replaced !== text){
-        element.innerHTML = replaced;
+
+window.onload = sundial;
+
+function sundial(){
+    console.log("Sundial startup")
+    document.head.appendChild(style)
+    // const supportedElements = "p, h1, h2, h3, h4, h5, h6, a, span, b, div p";
+    const supportedElements = "*"
+    const timeMatchRegExp = /(\d{1,2})(:\d{2})?(:\d{2})?\s?(A.?M.?\s? | P.?M.?\s?)(UTC|GMT|ES?T|CST|MST|PST|AKST|HST|AEDT|BST|EASTERN|PACIFIC|CENTRAL)/gi;
+    // let replaced = document.body.innerHTML.replace(timeMatchRegExp, convertTime);
+    const elements = document.body.querySelectorAll(supportedElements);
+    console.log(elements)
+    for(let element of elements){
+        for(let child of element.childNodes){
+            if(child.nodeType === 3){
+                const text = child.nodeValue;
+                const replaced = text.replace(timeMatchRegExp, convertTime);
+                if(replaced !== text){
+                    element.innerHTML = replaced;
+                    // element.replaceChild(document.createTextNode(replaced), child);
+                }
+            }
+            
+        }
     }
 }
 
