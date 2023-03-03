@@ -31,14 +31,14 @@ style.textContent = `
 window.onload = sundial;
 
 function sundial(){
-    console.log("Sundial startup")
+    //console.log("Sundial startup")
     document.head.appendChild(style)
     // const supportedElements = "p, h1, h2, h3, h4, h5, h6, a, span, b, div p";
     const supportedElements = "*"
     const timeMatchRegExp = /(\d{1,2})(:\d{2})?(:\d{2})?\s?(A.?M.?\s? | P.?M.?\s?)(UTC|GMT|ES?T|CST|MST|PST|AKST|HST|AEDT|BST|EASTERN|PACIFIC|CENTRAL)/gi;
     // let replaced = document.body.innerHTML.replace(timeMatchRegExp, convertTime);
     const elements = document.body.querySelectorAll(supportedElements);
-    console.log(elements)
+    //console.log(elements)
     for(let element of elements){
         for(let child of element.childNodes){
             if(child.nodeType === 3){
@@ -58,16 +58,16 @@ function timeToDate(timeString){
     timeString = timeString.replace(/\./g, '').toUpperCase();
     let timeArray = timeString.split(/:|[\s]+/);
     let formattedDate = "01 Jan 2023 ";
-    console.log("timeArray: " + timeArray);
+    //console.log("timeArray: " + timeArray);
     let readAllTimes = false;
     //add hours to the date
     if(timeString.match(/P.?M.?/i)){
         formattedDate += (parseInt(timeArray[0])%12 + 12) + ":";
-        console.log("12 test: " + formattedDate)
+        //console.log("12 test: " + formattedDate)
     }
     else{
         formattedDate += parseInt(timeArray[0]%12) + ":";
-        console.log("12 test: " + formattedDate)
+        //console.log("12 test: " + formattedDate)
     }
 
     //add minutes
@@ -95,7 +95,7 @@ function timeToDate(timeString){
         formattedDate += tz;
     }
     
-    console.log("formatted date: " + formattedDate);
+    //console.log("formatted date: " + formattedDate);
     let date = new Date(Date.parse(formattedDate));
     return date
 }
@@ -103,9 +103,15 @@ function timeToDate(timeString){
 function convertTime(timeString){
     // let now = new Date();
     let date = timeToDate(timeString);
-    console.log(typeof(date))
-    console.log(`${date.toLocaleTimeString()}`)
+    console.log(date.toDateString())
+    if(date.toDateString() != "Sun Jan 01 2023"){ //This is kinda messy
+        return timeString; 
+    }
+    //console.log(typeof(date))
+    //console.log(`${date.toLocaleTimeString()}`)
     let shownDate = date.toLocaleTimeString()
+    //console.log("Date: " + date.toDateString());
     shownDate = shownDate.substring(0, shownDate.length - 6) + ' ' + shownDate.substring(shownDate.length - 2, shownDate.length)
+    
     return `<span class=\"time-replace\">${shownDate}</span>`;
 }
