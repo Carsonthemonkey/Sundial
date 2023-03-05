@@ -157,13 +157,14 @@ function convertTime(timeString){
 function showOriginalTime(){
     const originalTime = document.querySelectorAll('.original-time');
     for(let time of originalTime){
-        time.style.display = "inline-block";
+        time.style.display = "";
     }
 }
 
 function hideOriginalTime(){
     const originalTime = document.querySelectorAll('.original-time');
     for(let time of originalTime){
+        console.log(time.style.display)
         time.style.display = "none";
     }
 }
@@ -173,7 +174,7 @@ function showReplacedTime(){
     const replacedTime = document.querySelectorAll('.time-replace');
     console.log(`found ${replacedTime.length} replaced times`)
     for(let time of replacedTime){
-        time.style.display = "inline-block";
+        time.style.display = "";
     }
 }
 
