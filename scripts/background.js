@@ -10,7 +10,7 @@ chrome.runtime.onInstalled.addListener(() => {
 chrome.action.onClicked.addListener(toggleExtension);
 
 //add listener for when current tab is focused
-/*
+
 chrome.tabs.onActivated.addListener((activeInfo) => {
   console.log("tab changed");
   chrome.storage.sync.get(['enableState']).then((result) => {
@@ -22,7 +22,7 @@ chrome.tabs.onActivated.addListener((activeInfo) => {
       console.log("sent message");
     })();
   });
-});*/
+});
 
 function toggleExtension(){
   chrome.storage.sync.get(['enableState']).then((result) => {
