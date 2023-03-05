@@ -4,16 +4,16 @@
   "description": "Base Level Extension",
   "version": "0.1",
   "action": {
-    "default_popup": "popup/popup.html",
     "default_icon": "images/hello_extensions.png"
   },
-  "permissions": ["activeTab"],
+  "permissions": ["activeTab", "storage"],
   "content_scripts":[{
     "js" : ["scripts/contents.js"],
     "matches" : ["*://*/*"],
     "run_at" : "document_end"
+  }],
+
+  "background" : {
+    "service_worker": "scripts/background.js"
   }
-  
-    
-  ]
 }

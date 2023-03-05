@@ -32,10 +32,18 @@ style.textContent = `
 }
     `
 
-window.onload = sundial;
+window.onload = startup;
+
+function startup(){
+    chrome.storage.sync.get('enableState').then((result) => {
+        if(result.enableState){
+            sundial();
+        }
+    });
+}
+
 
 function sundial(){
-    //console.log("Sundial startup")
     document.head.appendChild(style)
     // const supportedElements = "p, h1, h2, h3, h4, h5, h6, a, span, b, div p";
     const supportedElements = "*"
@@ -116,6 +124,13 @@ function convertTime(timeString){
     let shownDate = date.toLocaleTimeString()
     //console.log("Date: " + date.toDateString());
     shownDate = shownDate.substring(0, shownDate.length - 6) + ' ' + shownDate.substring(shownDate.length - 2, shownDate.length)
+
+    //add hidden element with original time
+    // let hiddenTime = document.createElement('span');
+    // hiddenTime.style.display = "none";
+    // hiddenTime.textContent = timeString;
+    // document.body.appendChild(hiddenTime);
+
     
     return `<span class=\"time-replace\">${shownDate}</span>`;
 }
