@@ -6,11 +6,12 @@
   "action": {
     "default_icon": "images/hello_extensions.png"
   },
-  "permissions": ["activeTab", "storage"],
+  "permissions": ["activeTab", "storage", "tabs"],
   "content_scripts":[{
     "js" : ["scripts/contents.js"],
     "matches" : ["*://*/*"],
-    "run_at" : "document_end"
+    "run_at" : "document_end",
+    "permissions" : ["activeTab", "storage", "tabs"]
   }],
 
   "background" : {

@@ -19,19 +19,18 @@ const timeZones = {
     "BST" : "UTC+1",
 }
 
+let hasEditedPage = false;
 
 const supportedTimezones = ["UTC","GMT","EST","CST","MST","PST","GMT","UTC"];
 
-const style = document.createElement('style');
-style.textContent = `
+const timeReplaceStyle = document.createElement('style');
+timeReplaceStyle.textContent = `
 .time-replace{
-    display: inline-block;
     border: 3px solid rgb(76, 91, 224);
     border-radius: 6px;
     padding: 0.3%;
 }
     `
-
 window.onload = startup;
 
 function startup(){
@@ -42,9 +41,28 @@ function startup(){
     });
 }
 
+//receive message from background script
+chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+    console.log("content script: " + request.message + "")
+    if(request.message == "Enable" && !hasEditedPage){
+
+        sundial();
+    }
+    else if(request.message == "Enable"){
+        showReplacedTime();
+        hideOriginalTime();
+    }
+    else{
+        showOriginalTime();
+        hideReplacedTime();
+    }
+});
+
+//add listener for when current tab is focused (This probably needs to be moved to background.js)
 
 function sundial(){
-    document.head.appendChild(style)
+    document.head.appendChild(timeReplaceStyle)
+    hasEditedPage = true;
     // const supportedElements = "p, h1, h2, h3, h4, h5, h6, a, span, b, div p";
     const supportedElements = "*"
     const timeMatchRegExp = /(\d{1,2})(:\d{2})?(:\d{2})?\s?(A.?M.?\s? | P.?M.?\s?)(UTC|GMT|ES?T|CST|MST|PS?T|AKST|HST|AEDT|BST|EASTERN|PACIFIC|CENTRAL|JST|CT|IST|NZDT|MSK|CET|MOUNTAIN|GREENWICH|INDIAN)/gi;
@@ -64,6 +82,7 @@ function sundial(){
             
         }
     }
+    hideOriginalTime();
 }
 
 function timeToDate(timeString){
@@ -132,5 +151,36 @@ function convertTime(timeString){
     // document.body.appendChild(hiddenTime);
 
     
-    return `<span class=\"time-replace\">${shownDate}</span>`;
+    return `<span class="original-time">${timeString}</span><span class=\"time-replace\">${shownDate}</span>`;
+}
+
+function showOriginalTime(){
+    const originalTime = document.querySelectorAll('.original-time');
+    for(let time of originalTime){
+        time.style.display = "inline-block";
+    }
+}
+
+function hideOriginalTime(){
+    const originalTime = document.querySelectorAll('.original-time');
+    for(let time of originalTime){
+        time.style.display = "none";
+    }
+}
+
+function showReplacedTime(){
+    console.log("showing replaced time")
+    const replacedTime = document.querySelectorAll('.time-replace');
+    console.log(`found ${replacedTime.length} replaced times`)
+    for(let time of replacedTime){
+        time.style.display = "inline-block";
+    }
+}
+
+function hideReplacedTime(){
+    console.log("hiding replaced time")
+    const replacedTime = document.querySelectorAll('.time-replace');
+    for(let time of replacedTime){
+        time.style.display = "none";
+    }
 }
