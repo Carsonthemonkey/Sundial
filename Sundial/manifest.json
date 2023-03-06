@@ -1,0 +1,26 @@
+{
+  "manifest_version": 3,
+  "name": "Sundial",
+  "description": "Sundial is a Chrome extension that automatically converts times on webpages to your local time zone.",
+  "version": "0.0.0.1",
+  "action": {
+    "default_icon": "images/Sundial_logo_32.png"
+  },
+  "icons" : {
+    "16" : "images/Sundial_logo_16.png",
+    "32" : "images/Sundial_logo_32.png",
+    "48" : "images/Sundial_logo_48.png",
+    "128" : "images/Sundial_logo_128.png"
+  },
+  "permissions": ["activeTab", "storage", "tabs"],
+  "content_scripts":[{
+    "js" : ["scripts/contents.js"],
+    "matches" : ["*://*/*"],
+    "run_at" : "document_end",
+    "permissions" : ["activeTab", "storage", "tabs"]
+  }],
+
+  "background" : {
+    "service_worker": "scripts/background.js"
+  }
+}
