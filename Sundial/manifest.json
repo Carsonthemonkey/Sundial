@@ -12,12 +12,11 @@
     "48" : "images/Sundial_logo_48.png",
     "128" : "images/Sundial_logo_128.png"
   },
-  "permissions": ["activeTab", "storage", "tabs"],
+  "permissions": ["storage", "management"],
   "content_scripts":[{
     "js" : ["scripts/contents.js"],
     "matches" : ["*://*/*"],
-    "run_at" : "document_end",
-    "permissions" : ["activeTab", "storage", "tabs"]
+    "run_at" : "document_end"
   }],
 
   "background" : {

@@ -6,6 +6,21 @@ chrome.runtime.onInstalled.addListener(() => {
     chrome.storage.sync.set({enableState: true});
   });
 
+chrome.management.onEnabled.addListener(() => {
+  chrome.storage.sync.get(['enableState']).then((result) => {
+    if(result.enableState){
+      chrome.action.setBadgeText({
+        text: "ON",
+      });
+    }
+    else{
+      chrome.action.setBadgeText({
+        text: "OFF",
+      });
+    }
+  });
+});
+
 
 chrome.action.onClicked.addListener(toggleExtension);
 
