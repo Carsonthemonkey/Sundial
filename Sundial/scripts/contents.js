@@ -19,18 +19,58 @@ const timeZones = {
     "BST" : "UTC+1",
 }
 
+const css = `
+
+.info-box{
+    visibility: hidden;
+    opacity: 0;
+    font-style: italic;
+    font-size: .98em;
+    white-space: nowrap;
+    font-weight: bold;
+    font-family: 'Montserrat', sans-serif;
+    padding: 12%;
+    z-index: 9999;
+    text-decoration: underline;
+    text-underline-position: under;
+    text-decoration-color: rgb(156, 156, 156);
+    text-decoration-thickness: 2px;
+    border: 3px solid rgb(219, 219, 219);
+    background-color: rgb(238, 238, 238);
+    background-color: rgb(#ff0000);
+    color: rgb(9, 9, 9);
+    border-radius: 0.5em;
+    transition: all 0.2s ease-out;
+
+    display: flex;
+    justify-content: space-between;
+    text-align: center;
+    position: absolute;
+    top: 0%;
+    left: 50%;
+    transform: translate(-50%, -100%);
+}
+
+.time-replace{
+    border: 3px solid rgb(76, 91, 224);
+    border-radius: 6px;
+    padding: 0.3%;
+    position: relative;
+}
+
+.time-replace:hover .info-box{
+    opacity: 1;
+    visibility: visible;
+    transform: translate(-50%, -115%);
+}
+`
+
 let hasEditedPage = false;
 
 const supportedTimezones = ["UTC","GMT","EST","CST","MST","PST","GMT","UTC"];
 
 const timeReplaceStyle = document.createElement('style');
-timeReplaceStyle.textContent = `
-.time-replace{
-    border: 3px solid rgb(76, 91, 224);
-    border-radius: 6px;
-    padding: 0.3%;
-}
-    `
+timeReplaceStyle.textContent = css;
 window.onload = startup;
 
 function startup(){
@@ -136,7 +176,8 @@ function convertTime(timeString){
     }
     let shownDate = date.toLocaleTimeString()
     shownDate = shownDate.substring(0, shownDate.length - 6) + ' ' + shownDate.substring(shownDate.length - 2, shownDate.length)
-    return `<span class="original-time">${timeString}</span><span class=\"time-replace\">${shownDate}</span>`;
+    return `<span class="original-time">${timeString}</span><span class=\"time-replace\">${shownDate}<span class="info-box">"${timeString}"</span></span>`;
+    //<span></span>
 }
 
 function showOriginalTime(){
