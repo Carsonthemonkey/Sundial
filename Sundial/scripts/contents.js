@@ -74,7 +74,10 @@ function sundial(){
                 const text = child.nodeValue;
                 const replaced = text.replace(timeMatchRegExp, convertTime);
                 if(replaced !== text){
-                    element.innerHTML = replaced;
+                    const span = document.createElement("span");
+                    span.innerHTML = replaced;
+                    child.replaceWith(span);
+                    // element.innerHTML = replaced;
                 }
             }
             
@@ -126,6 +129,8 @@ function timeToDate(timeString){
 }
 
 function convertTime(timeString){
+    console.log(timeString)// Check for specific oscars cas for tracking down a bug
+    
     let date = timeToDate(timeString);
     if(date.toDateString() != "Sun Jan 01 2023"){
         return timeString; 
@@ -145,7 +150,6 @@ function showOriginalTime(){
 function hideOriginalTime(){
     const originalTime = document.querySelectorAll('.original-time');
     for(let time of originalTime){
-        console.log(time.style.display)
         time.style.display = "none";
     }
 }
