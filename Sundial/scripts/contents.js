@@ -127,8 +127,7 @@ function timeToDate(timeString){
 
 function convertTime(timeString){
     let date = timeToDate(timeString);
-    console.log(date.toDateString())
-    if(date.toDateString() != "Sun Jan 01 2023"){ //This is kinda messy
+    if(date.toDateString() != "Sun Jan 01 2023"){
         return timeString; 
     }
     let shownDate = date.toLocaleTimeString()

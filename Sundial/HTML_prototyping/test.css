@@ -1,0 +1,124 @@
+/* add the monserrat font */
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300&display=swap');
+
+.original-time {
+  display: none;
+}
+
+.time-replace{
+    border: 3px solid rgb(76, 91, 224);
+    border-radius: 6px;
+    padding: 0.3%;
+    position: relative;
+}
+
+.info-box1{
+    /* make the span invisible by default */
+    display: flex;
+    justify-content: space-between;
+    text-align: center;
+    /* make span invisible */
+    visibility: hidden;
+    opacity: 0;
+    position: absolute;
+    /*make the font italicized*/
+    font-style: italic;
+    /* make the font size smaller */
+    font-size: .98em;
+    /* make the span appear on one line */
+    white-space: nowrap;
+    /* make the font monserrat bold */
+    font-weight: bold;
+    font-family: 'Montserrat', sans-serif;
+    /* make the border have more room */
+    padding: 12%;
+    /*make span appear above parent span*/
+    z-index: 1;
+    /* give the text a line below it */
+    text-decoration: underline;
+    /* make the underline a little lower */
+    text-underline-position: under;
+    /* make the underline light grey */
+    text-decoration-color: rgb(156, 156, 156);
+    /* make the underline a little thicker */
+    text-decoration-thickness: 2px;
+    /*create border*/
+    border: 3px solid rgb(219, 219, 219);
+    /*create background color*/
+    background-color: rgb(238, 238, 238);
+    top: -150%;
+    left: -170%;
+    background-color: rgb(#ff0000);
+    color: rgb(9, 9, 9);
+    border-radius: 6px;
+    transition: all 0.2s ease-out;
+
+    
+}
+
+.button-container{
+    /* remove text underline */
+    text-decoration: none;
+}
+
+/* create a ruleset for all spans that are children of infobox1 */
+
+
+.info-box2{
+    /* opacity: 0;
+    visibility: hidden; */
+    transition: all 0.2s ease-out;
+    position: absolute;
+    
+
+}
+
+/* make the .infobox span appear when .time-replace is hovered */
+.time-replace:hover .info-box1{
+    /* make it fade in */
+    opacity: 1;
+    visibility: visible;
+    top: -175%;
+    /* make text bigger */
+    
+
+}
+
+.time-replace:hover .info-box2{
+    /* make it fade in */
+    opacity: 1;
+    visibility: visible;
+
+}
+
+.sundial-option-button{
+    /* make the button appear on the next line and centered in it's parent span. It has an image inside of it */
+    
+/* display the  */
+
+    display: inline-block;
+    /* remove the underline */
+    text-decoration: none;
+
+    margin: 0 auto;
+    cursor: pointer;
+    /* make the button have no border */
+    border: none;
+
+    /* make the button have some space above it */
+    margin-top: 5%;
+    transition: all 0.1s ease-out;
+    /* make the button a little bigger in pixels*/
+    width: 30px;
+    height: 30px;
+    
+}
+
+.sundial-option-button:hover{
+    /* fade in a grey background */
+    background-color: rgb(219, 219, 219);
+    /* give the background rounded corners */
+    border-radius: 6px;
+
+
+}
