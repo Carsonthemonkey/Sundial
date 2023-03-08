@@ -12,7 +12,7 @@
     position: relative;
 }
 
-.info-box1{
+.infoo-box1{
     /* make the span invisible by default */
     display: flex;
     justify-content: space-between;
@@ -46,13 +46,59 @@
     border: 3px solid rgb(219, 219, 219);
     /*create background color*/
     background-color: rgb(238, 238, 238);
-    top: -150%;
+    top: -130%;
     left: -170%;
     background-color: rgb(#ff0000);
     color: rgb(9, 9, 9);
     border-radius: 6px;
     transition: all 0.2s ease-out;
 
+    
+}
+
+.info-box1{
+    /* make the span invisible by default */
+   
+    /* make span invisible */
+    visibility: hidden;
+    opacity: 0;
+    /*make the font italicized*/
+    font-style: italic;
+    /* make the font size smaller */
+    font-size: .98em;
+    /* make the span appear on one line */
+    white-space: nowrap;
+    /* make the font monserrat bold */
+    font-weight: bold;
+    font-family: 'Montserrat', sans-serif;
+    /* make the border have more room */
+    padding: 12%;
+    /*make span appear above parent span*/
+    z-index: 1;
+    /* give the text a line below it */
+    text-decoration: underline;
+    /* make the underline a little lower */
+    text-underline-position: under;
+    /* make the underline light grey */
+    text-decoration-color: rgb(156, 156, 156);
+    /* make the underline a little thicker */
+    text-decoration-thickness: 2px;
+    /*create border*/
+    border: 3px solid rgb(219, 219, 219);
+    /*create background color*/
+    background-color: rgb(238, 238, 238);
+    background-color: rgb(#ff0000);
+    color: rgb(9, 9, 9);
+    border-radius: 6px;
+    transition: all 0.2s ease-out;
+
+    display: flex;
+    justify-content: space-between;
+    text-align: center;
+    position: absolute;
+    top: 0%;
+    left: 50%;
+    transform: translate(-50%, -115%);
     
 }
 
@@ -78,7 +124,6 @@
     /* make it fade in */
     opacity: 1;
     visibility: visible;
-    top: -175%;
     /* make text bigger */
     
 
