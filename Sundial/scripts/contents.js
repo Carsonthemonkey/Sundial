@@ -77,7 +77,6 @@ function sundial(){
                     const span = document.createElement("span");
                     span.innerHTML = replaced;
                     child.replaceWith(span);
-                    // element.innerHTML = replaced;
                 }
             }
             
