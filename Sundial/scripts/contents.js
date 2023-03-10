@@ -9,6 +9,8 @@ const timeZones = {
     "ET" : "EST",
     "EASTERN" : "EST",
     "PACIFIC" : "PST",
+    "PDT" : "UTC-7",
+    "EDT" : "UTC-4",
     "PT" : "PST",
     "CET" : "UTC+1",
     "MSK" : "UTC+3",
@@ -17,6 +19,8 @@ const timeZones = {
     "AEDT" : "UTC+11",
     "NZDT" : "UTC+13",
     "BST" : "UTC+1",
+    "HAWAII" : "UTC-10",
+    "ALASKA" : "UTC-9"
 }
 
 const css = `
@@ -104,7 +108,7 @@ function sundial(){
     document.head.appendChild(timeReplaceStyle)
     hasEditedPage = true;
     const supportedElements = "*"
-    const timeMatchRegExp = /(\d{1,2})(:\d{2})?(:\d{2})?\s?(A.?M.?\s? | P.?M.?\s?)(UTC|GMT|ES?T|CST|MST|PS?T|AKST|HST|AEDT|BST|EASTERN|PACIFIC|CENTRAL|JST|CT|IST|NZDT|MSK|CET|MOUNTAIN|GREENWICH|INDIAN)/gi;
+    const timeMatchRegExp = /(\d{1,2})(:\d{2})?(:\d{2})?\s?(A.?M.?\s? | P.?M.?\s?)(UTC|GMT|ES?T|CST|MST|PS?T|AKST|HST|AEDT|BST|EASTERN|PACIFIC|CENTRAL|JST|CT|IST|NZDT|MSK|CET|MOUNTAIN|GREENWICH|INDIAN|HAWAII)/gi;
     // let replaced = document.body.innerHTML.replace(timeMatchRegExp, convertTime);
     const elements = document.body.querySelectorAll(supportedElements);
     //console.log(elements)
