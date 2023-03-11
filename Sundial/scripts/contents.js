@@ -9,6 +9,8 @@ const timeZones = {
     "ET" : "EST",
     "EASTERN" : "EST",
     "PACIFIC" : "PST",
+    "PDT" : "UTC-7",
+    "EDT" : "UTC-4",
     "PT" : "PST",
     "CET" : "UTC+1",
     "MSK" : "UTC+3",
@@ -17,20 +19,21 @@ const timeZones = {
     "AEDT" : "UTC+11",
     "NZDT" : "UTC+13",
     "BST" : "UTC+1",
+    "HAWAII" : "UTC-10",
+    "ALASKA" : "UTC-9"
 }
 
 let hasEditedPage = false;
-
+const infoBoxText = document.querySelector("#info-box-text")
 const supportedTimezones = ["UTC","GMT","EST","CST","MST","PST","GMT","UTC"];
+const infoBox = document.createElement("div")
+infoBox.innerHTML = "<span id=\"info-box-text\">\"ORIGINAL TIME PLACEHOLDER\"</span>"
+console.log(infoBoxText)
+const cssLink = document.createElement("link")
+cssLink.href = "../styles/content.css"
+cssLink.type = "text/css"
+cssLink.rel = "stylesheet"
 
-const timeReplaceStyle = document.createElement('style');
-timeReplaceStyle.textContent = `
-.time-replace{
-    border: 3px solid rgb(76, 91, 224);
-    border-radius: 6px;
-    padding: 0.3%;
-}
-    `
 window.onload = startup;
 
 function startup(){
@@ -45,7 +48,6 @@ function startup(){
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     console.log("content script: " + request.message + "")
     if(request.message == "Enable" && !hasEditedPage){
-
         sundial();
     }
     else if(request.message == "Enable"){
@@ -53,34 +55,46 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
         hideOriginalTime();
     }
     else{
+        hideInfoBox();
         showOriginalTime();
         hideReplacedTime();
     }
 });
 
-//add listener for when current tab is focused (This probably needs to be moved to background.js)
 
 function sundial(){
-    document.head.appendChild(timeReplaceStyle)
+    document.head.appendChild(cssLink)
+    infoBox.id = "info-box-container"
+    document.body.appendChild(infoBox)
+
+
     hasEditedPage = true;
     const supportedElements = "*"
-    const timeMatchRegExp = /(\d{1,2})(:\d{2})?(:\d{2})?\s?(A.?M.?\s? | P.?M.?\s?)(UTC|GMT|ES?T|CST|MST|PS?T|AKST|HST|AEDT|BST|EASTERN|PACIFIC|CENTRAL|JST|CT|IST|NZDT|MSK|CET|MOUNTAIN|GREENWICH|INDIAN)/gi;
-    // let replaced = document.body.innerHTML.replace(timeMatchRegExp, convertTime);
+    const timeMatchRegExp = /(\d{1,2})(:\d{2})?(:\d{2})?\s?(A.?M.?\s? | P.?M.?\s?)(UTC|GMT|ES?T|CST|MST|PS?T|AKST|HST|AEDT|BST|EASTERN|PACIFIC|CENTRAL|JST|CT|IST|NZDT|MSK|CET|MOUNTAIN|GREENWICH|INDIAN|HAWAII)/gi;
     const elements = document.body.querySelectorAll(supportedElements);
-    //console.log(elements)
     for(let element of elements){
         for(let child of element.childNodes){
             if(child.nodeType === 3){
                 const text = child.nodeValue;
                 const replaced = text.replace(timeMatchRegExp, convertTime);
                 if(replaced !== text){
-                    element.innerHTML = replaced;
+                    const span = document.createElement("span");
+                    span.innerHTML = replaced;
+                    child.replaceWith(span);
                 }
-            }
-            
+            }            
         }
     }
+    timeReplacedArray = document.querySelectorAll(".time-replace");
+    for (const timeReplace of timeReplacedArray) {
+        console.log("adding event listener to time replace element")
+        timeReplace.addEventListener("mouseover", showInfoBox);
+        timeReplace.addEventListener("mouseout", hideInfoBox);
+    }
     hideOriginalTime();
+
+    const timeReplaceElements = document.querySelectorAll(".time-replace");
+    const originalTimeElements = document.querySelectorAll(".original-time")
 }
 
 function timeToDate(timeString){
@@ -126,18 +140,48 @@ function timeToDate(timeString){
 }
 
 function convertTime(timeString){
+    console.log(timeString)
+    
     let date = timeToDate(timeString);
-    console.log(date.toDateString())
-    if(date.toDateString() != "Sun Jan 01 2023"){ //This is kinda messy
+    if(date.toDateString() != "Sun Jan 01 2023"){
         return timeString; 
     }
     let shownDate = date.toLocaleTimeString()
     shownDate = shownDate.substring(0, shownDate.length - 6) + ' ' + shownDate.substring(shownDate.length - 2, shownDate.length)
-    return `<span class="original-time">${timeString}</span><span class=\"time-replace\">${shownDate}</span>`;
+    return `<span class="original-time">${timeString}</span><span class=\"time-replace\" id="${timeString}">${shownDate}</span>`; //the id thing is probably messy
+}
+
+function showInfoBox(event){
+    //TODO: show info box with original time
+    infoBox.style.setProperty("transition" , "opacity 0.2s ease-out, transform 0.2s ease-out")
+    const infoBoxText = document.querySelector("#info-box-text")
+    console.log("hovering over time replace element")
+    infoBox.style.visibility = "visible";
+    infoBox.style.opacity = "1";
+    infoBoxText.innerHTML = `"${event.target.id}"`
+    const element = event.target;
+    const elementPosition = element.getBoundingClientRect();
+    const infoBoxPosition = infoBox.getBoundingClientRect();
+    const infoBoxTop = elementPosition.top - 5 - infoBoxPosition.height;
+    const infoBoxLeft = elementPosition.left + elementPosition.width / 2 - infoBoxPosition.width / 2
+    infoBox.style.top = infoBoxTop + "px"
+    infoBox.style.left = infoBoxLeft + "px"
+
+    infoBox.style.transform = "translate(0%, 0%)"
+    infoBox.style.visibility = "visible"
+    infoBox.style.opacity = "1"
+}
+
+function hideInfoBox(event){
+    infoBox.style.visibility = "hidden";
+    infoBox.style.opacity = "0";
+    infoBox.style.transform = "translate(0%, 30%)"
 }
 
 function showOriginalTime(){
     const originalTime = document.querySelectorAll('.original-time');
+    console.log("original times" + originalTime)
+    console.log(`found ${originalTime.length} original times`)
     for(let time of originalTime){
         time.style.display = "";
     }
@@ -146,7 +190,6 @@ function showOriginalTime(){
 function hideOriginalTime(){
     const originalTime = document.querySelectorAll('.original-time');
     for(let time of originalTime){
-        console.log(time.style.display)
         time.style.display = "none";
     }
 }
