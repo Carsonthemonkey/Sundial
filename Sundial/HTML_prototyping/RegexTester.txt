@@ -41,3 +41,15 @@ Daylight Saving Time (US time zones)
 11:00am Alaska Daylight Time
 11:00am Alaska Daylight
 11:00am AKDT
+
+some more special cases
+(These test cases may not work with conversion even if they are detected by regex)
+
+6 p.m., Pacific
+
+6ampacific
+
+4p.mpst
+
+8.  A.m., PST
+9pm (Eastern)
