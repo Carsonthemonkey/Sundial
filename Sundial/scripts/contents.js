@@ -22,39 +22,6 @@ const timeZones = {
     "HAWAII" : "UTC-10",
     "ALASKA" : "UTC-9"
 }
-/*
-const css = `
-.info-box {
-    font-style: italic;
-    font-size: 0.98em;
-    font-weight: bold;
-    font-family: 'Montserrat', sans-serif;
-    padding: 12%;
-    z-index: 9999;
-    text-decoration: underline;
-    text-underline-position: under;
-    text-decoration-color: rgb(156, 156, 156);
-    text-decoration-thickness: 2px;
-    border: 3px solid rgb(219, 219, 219);
-    background-color: rgb(238, 238, 238);
-    color: rgb(9, 9, 9);
-    border-radius: 0.5em;
-    position: fixed;
-    left: 50%;
-    transform: translateX(-50%);
-    visibility: hidden;
-    opacity: 0;
-    transition: visibility 0s linear 0.2s, opacity 0.2s;
-  }
-
-.time-replace{
-    border: 3px solid rgb(76, 91, 224);
-    border-radius: 6px;
-    padding: 0.3%;
-    position: relative;
-}
-
-`*/
 
 let hasEditedPage = false;
 const infoBoxText = document.querySelector("#info-box-text")
@@ -94,11 +61,9 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     }
 });
 
-//add listener for when current tab is focused (This probably needs to be moved to background.js)
 
 function sundial(){
     document.head.appendChild(cssLink)
-    // add popup element to document head
     infoBox.id = "info-box-container"
     document.body.appendChild(infoBox)
 
@@ -106,9 +71,7 @@ function sundial(){
     hasEditedPage = true;
     const supportedElements = "*"
     const timeMatchRegExp = /(\d{1,2})(:\d{2})?(:\d{2})?\s?(A.?M.?\s? | P.?M.?\s?)(UTC|GMT|ES?T|CST|MST|PS?T|AKST|HST|AEDT|BST|EASTERN|PACIFIC|CENTRAL|JST|CT|IST|NZDT|MSK|CET|MOUNTAIN|GREENWICH|INDIAN|HAWAII)/gi;
-    // let replaced = document.body.innerHTML.replace(timeMatchRegExp, convertTime);
     const elements = document.body.querySelectorAll(supportedElements);
-    //console.log(elements)
     for(let element of elements){
         for(let child of element.childNodes){
             if(child.nodeType === 3){
@@ -186,8 +149,6 @@ function convertTime(timeString){
     let shownDate = date.toLocaleTimeString()
     shownDate = shownDate.substring(0, shownDate.length - 6) + ' ' + shownDate.substring(shownDate.length - 2, shownDate.length)
     return `<span class="original-time">${timeString}</span><span class=\"time-replace\" id="${timeString}">${shownDate}</span>`; //the id thing is probably messy
-    // <span class="info-box">"${timeString}"</span></span>
-    //<span></span>
 }
 
 function showInfoBox(event){
