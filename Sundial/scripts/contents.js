@@ -60,6 +60,8 @@ let hasEditedPage = false;
 
 const supportedTimezones = ["UTC","GMT","EST","CST","MST","PST","GMT","UTC"];
 const infoBox = document.createElement("div")
+infoBox.innerHTML = "<span id=\"info-box-text\">\"ORIGINAL TIME PLACEHOLDER\"</span>"
+const infoBoxText = document.querySelector("#info-box-text")
 const cssLink = document.createElement("link")
 cssLink.href = "../styles/content.css"
 cssLink.type = "text/css"
@@ -98,7 +100,6 @@ function sundial(){
     document.head.appendChild(cssLink)
     // add popup element to document head
     infoBox.id = "info-box-container"
-    infoBox.innerHTML = "<span id=\"info-box-text\"></span>"
     document.body.appendChild(infoBox)
 
 
@@ -107,7 +108,6 @@ function sundial(){
     const timeMatchRegExp = /(\d{1,2})(:\d{2})?(:\d{2})?\s?(A.?M.?\s? | P.?M.?\s?)(UTC|GMT|ES?T|CST|MST|PS?T|AKST|HST|AEDT|BST|EASTERN|PACIFIC|CENTRAL|JST|CT|IST|NZDT|MSK|CET|MOUNTAIN|GREENWICH|INDIAN|HAWAII)/gi;
     // let replaced = document.body.innerHTML.replace(timeMatchRegExp, convertTime);
     const elements = document.body.querySelectorAll(supportedElements);
-    let timeReplacedArray = [];
     //console.log(elements)
     for(let element of elements){
         for(let child of element.childNodes){
@@ -116,14 +116,15 @@ function sundial(){
                 const replaced = text.replace(timeMatchRegExp, convertTime);
                 if(replaced !== text){
                     const span = document.createElement("span");
-                    timeReplacedArray.push(span);
                     span.innerHTML = replaced;
                     child.replaceWith(span);
                 }
             }            
         }
     }
+    timeReplacedArray = document.querySelectorAll(".time-replace");
     for (const timeReplace of timeReplacedArray) {
+        console.log("adding event listener to time replace element")
         timeReplace.addEventListener("mouseover", showInfoBox);
         timeReplace.addEventListener("mouseout", hideInfoBox);
     }
@@ -131,31 +132,33 @@ function sundial(){
 
     const timeReplaceElements = document.querySelectorAll(".time-replace");
     const originalTimeElements = document.querySelectorAll(".original-time");
-    for(let timeReplaceElement of timeReplaceElements){
-        timeReplaceElement.addEventListener("mouseover", (event) => {
-            console.log("hovering over time replace element")
-            let originalTime = "ORIGINAL TIME SET (ERROR)"
-            //set info box text to original time
-            infoBox.innerText = originalTime;
-            //show info box
-            infoBox.style.visibility = "visible";
-            infoBox.style.opacity = "1";
-            //place info box in the absolute center of the screen
-            // infoBox.style.top = "50%";
-            // infoBox.style.left = "50%";
-            // infoBox.style.transform = "translate(-50%, -50%)";
+    // old info box code:
+    
+//     for(let timeReplaceElement of timeReplaceElements){
+//         timeReplaceElement.addEventListener("mouseover", (event) => {
+//             console.log("hovering over time replace element")
+//             let originalTime = "ORIGINAL TIME SET (ERROR)"
+//             //set info box text to original time
+//             infoBox.innerText = originalTime;
+//             //show info box
+//             infoBox.style.visibility = "visible";
+//             infoBox.style.opacity = "1";
+//             //place info box in the absolute center of the screen
+//             // infoBox.style.top = "50%";
+//             // infoBox.style.left = "50%";
+//             // infoBox.style.transform = "translate(-50%, -50%)";
             
 
-            //get position of time replace element
-            const timeReplaceElementPosition = event.target.getBoundingClientRect();
-            // //get position of info box
-            const infoBoxPosition = infoBox.getBoundingClientRect();
-            // //set info box position to be above time replace element
-            infoBox.style.top = (timeReplaceElementPosition.top - infoBoxPosition.height) + "px";
-            // //set info box position to be centered with time replace element
-            infoBox.style.left = (timeReplaceElementPosition.left + (timeReplaceElementPosition.width/2) - (infoBoxPosition.width/2)) + "px";
-        })
-    }
+//             //get position of time replace element
+//             const timeReplaceElementPosition = event.target.getBoundingClientRect();
+//             // //get position of info box
+//             const infoBoxPosition = infoBox.getBoundingClientRect();
+//             // //set info box position to be above time replace element
+//             infoBox.style.top = (timeReplaceElementPosition.top - infoBoxPosition.height) + "px";
+//             // //set info box position to be centered with time replace element
+//             infoBox.style.left = (timeReplaceElementPosition.left + (timeReplaceElementPosition.width/2) - (infoBoxPosition.width/2)) + "px";
+//         })
+//     }
 }
 
 function timeToDate(timeString){
@@ -201,7 +204,7 @@ function timeToDate(timeString){
 }
 
 function convertTime(timeString){
-    console.log(timeString)// Check for specific oscars cas for tracking down a bug
+    console.log(timeString)
     
     let date = timeToDate(timeString);
     if(date.toDateString() != "Sun Jan 01 2023"){
@@ -215,11 +218,15 @@ function convertTime(timeString){
 }
 
 function showInfoBox(event){
+    //TODO: show info box with original time
+    infoBox.style.setProperty("transition" , "all 0.2s ease-out")
+    console.log("hovering over time replace element")
     infoBox.style.visibility = "visible";
     infoBox.style.opacity = "1";
     const element = event.target;
     const elementPosition = element.getBoundingClientRect();
     const infoBoxPosition = infoBox.getBoundingClientRect();
+    const infoBoxTop = elementPosition.top - 5 - infoBoxPosition.height;
     const infoBoxLeft = elementPosition.left + elementPosition.width / 2 - infoBoxPosition.width / 2
     infoBox.style.top = infoBoxTop + "px"
     infoBox.style.left = infoBoxLeft + "px"
