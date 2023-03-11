@@ -1,15 +1,14 @@
 document.addEventListener("DOMContentLoaded", domLoadedHandler)
 //load css
 const cssLink = document.createElement("link")
-cssLink.href = "test.css"
+cssLink.href = "../styles/contents.css"
 cssLink.type = "text/css"
 cssLink.rel = "stylesheet"
 
 function domLoadedHandler(){
     document.head.appendChild(cssLink)
     const infoBox = document.querySelector("#info-box-container")
-    //add a css rule to infobox
-    // set info box to red text
+
     const timeReplaceElements = document.querySelectorAll(".time-replace")
     for (const element of timeReplaceElements) {
         element.addEventListener("mouseover", showInfoBox)

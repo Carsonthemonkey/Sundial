@@ -22,7 +22,7 @@ const timeZones = {
     "HAWAII" : "UTC-10",
     "ALASKA" : "UTC-9"
 }
-
+/*
 const css = `
 .info-box {
     font-style: italic;
@@ -54,14 +54,16 @@ const css = `
     position: relative;
 }
 
-`
+`*/
 
 let hasEditedPage = false;
 
 const supportedTimezones = ["UTC","GMT","EST","CST","MST","PST","GMT","UTC"];
-
-const timeReplaceStyle = document.createElement('style');
-timeReplaceStyle.textContent = css;
+const infoBox = document.createElement("div")
+const cssLink = document.createElement("link")
+cssLink.href = "../styles/content.css"
+cssLink.type = "text/css"
+cssLink.rel = "stylesheet"
 
 window.onload = startup;
 
@@ -93,11 +95,10 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
 //add listener for when current tab is focused (This probably needs to be moved to background.js)
 
 function sundial(){
-    document.head.appendChild(timeReplaceStyle)
+    document.head.appendChild(cssLink)
     // add popup element to document head
-    const infoBox = document.createElement("span")
-    infoBox.classList.add("info-box")
-    infoBox.innerHTML = "ORIGINAL TIME"
+    infoBox.id = "info-box-container"
+    infoBox.innerHTML = "<span id=\"info-box-text\"></span>"
     document.body.appendChild(infoBox)
 
 
@@ -106,6 +107,7 @@ function sundial(){
     const timeMatchRegExp = /(\d{1,2})(:\d{2})?(:\d{2})?\s?(A.?M.?\s? | P.?M.?\s?)(UTC|GMT|ES?T|CST|MST|PS?T|AKST|HST|AEDT|BST|EASTERN|PACIFIC|CENTRAL|JST|CT|IST|NZDT|MSK|CET|MOUNTAIN|GREENWICH|INDIAN|HAWAII)/gi;
     // let replaced = document.body.innerHTML.replace(timeMatchRegExp, convertTime);
     const elements = document.body.querySelectorAll(supportedElements);
+    let timeReplacedArray = [];
     //console.log(elements)
     for(let element of elements){
         for(let child of element.childNodes){
@@ -114,11 +116,16 @@ function sundial(){
                 const replaced = text.replace(timeMatchRegExp, convertTime);
                 if(replaced !== text){
                     const span = document.createElement("span");
+                    timeReplacedArray.push(span);
                     span.innerHTML = replaced;
                     child.replaceWith(span);
                 }
             }            
         }
+    }
+    for (const timeReplace of timeReplacedArray) {
+        timeReplace.addEventListener("mouseover", showInfoBox);
+        timeReplace.addEventListener("mouseout", hideInfoBox);
     }
     hideOriginalTime();
 
@@ -205,6 +212,27 @@ function convertTime(timeString){
     return `<span class="original-time">${timeString}</span><span class=\"time-replace\">${shownDate}</span>`;
     // <span class="info-box">"${timeString}"</span></span>
     //<span></span>
+}
+
+function showInfoBox(event){
+    infoBox.style.visibility = "visible";
+    infoBox.style.opacity = "1";
+    const element = event.target;
+    const elementPosition = element.getBoundingClientRect();
+    const infoBoxPosition = infoBox.getBoundingClientRect();
+    const infoBoxLeft = elementPosition.left + elementPosition.width / 2 - infoBoxPosition.width / 2
+    infoBox.style.top = infoBoxTop + "px"
+    infoBox.style.left = infoBoxLeft + "px"
+
+    infoBox.style.transform = "translate(0%, 0%)"
+    infoBox.style.visibility = "visible"
+    infoBox.style.opacity = "1"
+}
+
+function hideInfoBox(event){
+    infoBox.style.visibility = "hidden";
+    infoBox.style.opacity = "0";
+    infoBox.style.transform = "translate(0%, 30%)"
 }
 
 function showOriginalTime(){
