@@ -1,6 +1,15 @@
 document.addEventListener("DOMContentLoaded", domLoadedHandler)
+//load css
+const cssLink = document.createElement("link")
+cssLink.href = "test.css"
+cssLink.type = "text/css"
+cssLink.rel = "stylesheet"
+
 function domLoadedHandler(){
-    const infoBox = document.querySelector(".info-box-container")
+    document.head.appendChild(cssLink)
+    const infoBox = document.querySelector("#info-box-container")
+    //add a css rule to infobox
+    // set info box to red text
     const timeReplaceElements = document.querySelectorAll(".time-replace")
     for (const element of timeReplaceElements) {
         element.addEventListener("mouseover", showInfoBox)
@@ -8,6 +17,7 @@ function domLoadedHandler(){
     }
 
     function showInfoBox(event) {
+        infoBox.style.setProperty("transition" , "all 0.2s ease-out")
         // transform the info box to above the element
         const element = event.target
         const elementRect = element.getBoundingClientRect()

@@ -1,6 +1,4 @@
-/* add the monserrat font */
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300&display=swap');
-
 .original-time {
   display: none;
 }
@@ -12,185 +10,37 @@
     position: relative;
 }
 
-.infoo-box1{
-    /* make the span invisible by default */
-    display: flex;
-    justify-content: space-between;
-    text-align: center;
-    /* make span invisible */
-    visibility: hidden;
-    opacity: 0;
-    position: absolute;
-    /*make the font italicized*/
-    font-style: italic;
-    /* make the font size smaller */
-    font-size: .98em;
-    /* make the span appear on one line */
-    white-space: nowrap;
-    /* make the font monserrat bold */
-    font-weight: bold;
-    font-family: 'Montserrat', sans-serif;
-    /* make the border have more room */
-    padding: 12%;
-    /*make span appear above parent span*/
-    z-index: 1;
-    /* give the text a line below it */
-    text-decoration: underline;
-    /* make the underline a little lower */
-    text-underline-position: under;
-    /* make the underline light grey */
-    text-decoration-color: rgb(156, 156, 156);
-    /* make the underline a little thicker */
-    text-decoration-thickness: 2px;
-    /*create border*/
-    border: 3px solid rgb(219, 219, 219);
-    /*create background color*/
-    background-color: rgb(238, 238, 238);
-    top: -130%;
-    left: -170%;
-    background-color: rgb(#ff0000);
-    color: rgb(9, 9, 9);
-    border-radius: 6px;
-    transition: all 0.2s ease-out;
-
-    
-}
-
-.info0-box{
-    visibility: hidden;
-    opacity: 0;
-    font-style: italic;
-    font-size: .98em;
-    white-space: nowrap;
-    font-weight: bold;
-    font-family: 'Montserrat', sans-serif;
-    padding: 12%;
-    z-index: 1;
-    text-decoration: underline;
-    text-underline-position: under;
-    text-decoration-color: rgb(156, 156, 156);
-    text-decoration-thickness: 2px;
-    border: 3px solid rgb(219, 219, 219);
-    background-color: rgb(238, 238, 238);
-    background-color: rgb(#ff0000);
-    color: rgb(9, 9, 9);
-    border-radius: 0.5em;
-    transition: all 0.2s ease-out;
-
-    display: flex;
-    justify-content: space-between;
-    text-align: center;
-    position: absolute;
-    top: 0%;
-    left: 50%;
-    transform: translate(-50%, -100%);
-}
-
-.info-box-container{
-    /* offse the div down */
+#info-box-container{
     transform: translate(-0%, 30%);
-
-    /* make the div invisible by default */
-    /* visibility: hidden; */
-    /* opacity: 0;  */
+    visibility: hidden;
+    opacity: 0; 
     position: fixed;    
     border: 2px solid rgb(254, 103, 21);
-    /* set the background to light gray */
     background-color: rgb(255, 209, 160);
     /* make the background a vertical gradient from blue to orange */
     /* background: linear-gradient(180deg, rgb(150, 226, 247) 0%, rgb(255, 177, 128) 90%); */
-    transition: all 0.2s ease-out;    
     border-radius: 0.5em;
     padding: 1%;
-    /* bold the font */
     font-family: 'Montserrat', sans-serif;
 }
-.info-box-text{
-    /* make the font bold and italic */
+#info-box-text{
     font-style: italic;
     font-weight: bold;
-    /* give the font an underline */
     text-decoration: underline;
-    /* make the underline a little lower */
     text-underline-position: under;
-    /* make the underline light grey */
     text-decoration-color: rgb(255, 106, 14);
 }
 
 /* check for dark mode */
 @media (prefers-color-scheme: dark) {
-    .info-box-container{
+    #info-box-container{
         border: 2px solid rgb(106, 106, 255);
         background-color: rgb(77, 37, 121);
     }
     
-    .info-box-text{
+    #info-box-text{
         color: rgb(255, 255, 255);
         text-decoration-color: #ffffff;
     }
-
-
-}
-
-
-.button-container{
-    /* remove text underline */
-    text-decoration: none;
-}
-
-/* create a ruleset for all spans that are children of infobox1 */
-
-
-.info-box2{
-    /* opacity: 0;
-    visibility: hidden; */
-    transition: all 0.2s ease-out;
-    position: absolute;
-    
-
-}
-
-.time-replace:hover .info-box{
-    opacity: 1;
-    visibility: visible;
-    transform: translate(-50%, -115%);
-}
-
-.time-replace:hover .info-box2{
-    /* make it fade in */
-    opacity: 1;
-    visibility: visible;
-
-}
-
-.sundial-option-button{
-    /* make the button appear on the next line and centered in it's parent span. It has an image inside of it */
-    
-/* display the  */
-
-    display: inline-block;
-    /* remove the underline */
-    text-decoration: none;
-
-    margin: 0 auto;
-    cursor: pointer;
-    /* make the button have no border */
-    border: none;
-
-    /* make the button have some space above it */
-    margin-top: 5%;
-    transition: all 0.1s ease-out;
-    /* make the button a little bigger in pixels*/
-    width: 30px;
-    height: 30px;
-    
-}
-
-.sundial-option-button:hover{
-    /* fade in a grey background */
-    background-color: rgb(219, 219, 219);
-    /* give the background rounded corners */
-    border-radius: 6px;
-
 
 }

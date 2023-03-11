@@ -117,8 +117,7 @@ function sundial(){
                     span.innerHTML = replaced;
                     child.replaceWith(span);
                 }
-            }
-            
+            }            
         }
     }
     hideOriginalTime();
