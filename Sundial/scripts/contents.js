@@ -81,7 +81,6 @@ function startup(){
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     console.log("content script: " + request.message + "")
     if(request.message == "Enable" && !hasEditedPage){
-
         sundial();
     }
     else if(request.message == "Enable"){
@@ -89,6 +88,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
         hideOriginalTime();
     }
     else{
+        hideInfoBox();
         showOriginalTime();
         hideReplacedTime();
     }
@@ -131,34 +131,7 @@ function sundial(){
     hideOriginalTime();
 
     const timeReplaceElements = document.querySelectorAll(".time-replace");
-    const originalTimeElements = document.querySelectorAll(".original-time");
-    // old info box code:
-    
-//     for(let timeReplaceElement of timeReplaceElements){
-//         timeReplaceElement.addEventListener("mouseover", (event) => {
-//             console.log("hovering over time replace element")
-//             let originalTime = "ORIGINAL TIME SET (ERROR)"
-//             //set info box text to original time
-//             infoBox.innerText = originalTime;
-//             //show info box
-//             infoBox.style.visibility = "visible";
-//             infoBox.style.opacity = "1";
-//             //place info box in the absolute center of the screen
-//             // infoBox.style.top = "50%";
-//             // infoBox.style.left = "50%";
-//             // infoBox.style.transform = "translate(-50%, -50%)";
-            
-
-//             //get position of time replace element
-//             const timeReplaceElementPosition = event.target.getBoundingClientRect();
-//             // //get position of info box
-//             const infoBoxPosition = infoBox.getBoundingClientRect();
-//             // //set info box position to be above time replace element
-//             infoBox.style.top = (timeReplaceElementPosition.top - infoBoxPosition.height) + "px";
-//             // //set info box position to be centered with time replace element
-//             infoBox.style.left = (timeReplaceElementPosition.left + (timeReplaceElementPosition.width/2) - (infoBoxPosition.width/2)) + "px";
-//         })
-//     }
+    const originalTimeElements = document.querySelectorAll(".original-time")
 }
 
 function timeToDate(timeString){
@@ -218,8 +191,9 @@ function convertTime(timeString){
 }
 
 function showInfoBox(event){
+    const infoBox = document.querySelector("#info-box-container")
     //TODO: show info box with original time
-    infoBox.style.setProperty("transition" , "all 0.2s ease-out")
+    infoBox.style.setProperty("transition" , "opacity 0.2s ease-out, transform 0.2s ease-out")
     console.log("hovering over time replace element")
     infoBox.style.visibility = "visible";
     infoBox.style.opacity = "1";
@@ -244,6 +218,8 @@ function hideInfoBox(event){
 
 function showOriginalTime(){
     const originalTime = document.querySelectorAll('.original-time');
+    console.log("original times" + originalTime)
+    console.log(`found ${originalTime.length} original times`)
     for(let time of originalTime){
         time.style.display = "";
     }

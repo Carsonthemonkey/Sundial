@@ -16,6 +16,7 @@ function domLoadedHandler(){
     }
 
     function showInfoBox(event) {
+
         infoBox.style.setProperty("transition" , "all 0.2s ease-out")
         // transform the info box to above the element
         const element = event.target
