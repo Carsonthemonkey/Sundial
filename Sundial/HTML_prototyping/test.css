@@ -56,7 +56,7 @@
     
 }
 
-.info-box{
+.info0-box{
     visibility: hidden;
     opacity: 0;
     font-style: italic;
@@ -85,6 +85,53 @@
     left: 50%;
     transform: translate(-50%, -100%);
 }
+
+.info-box-container{
+    /* offse the div down */
+    transform: translate(-0%, 30%);
+
+    /* make the div invisible by default */
+    /* visibility: hidden; */
+    /* opacity: 0;  */
+    position: fixed;    
+    border: 2px solid rgb(254, 103, 21);
+    /* set the background to light gray */
+    background-color: rgb(255, 209, 160);
+    /* make the background a vertical gradient from blue to orange */
+    /* background: linear-gradient(180deg, rgb(150, 226, 247) 0%, rgb(255, 177, 128) 90%); */
+    transition: all 0.2s ease-out;    
+    border-radius: 0.5em;
+    padding: 1%;
+    /* bold the font */
+    font-family: 'Montserrat', sans-serif;
+}
+.info-box-text{
+    /* make the font bold and italic */
+    font-style: italic;
+    font-weight: bold;
+    /* give the font an underline */
+    text-decoration: underline;
+    /* make the underline a little lower */
+    text-underline-position: under;
+    /* make the underline light grey */
+    text-decoration-color: rgb(255, 106, 14);
+}
+
+/* check for dark mode */
+@media (prefers-color-scheme: dark) {
+    .info-box-container{
+        border: 2px solid rgb(106, 106, 255);
+        background-color: rgb(77, 37, 121);
+    }
+    
+    .info-box-text{
+        color: rgb(255, 255, 255);
+        text-decoration-color: #ffffff;
+    }
+
+
+}
+
 
 .button-container{
     /* remove text underline */
