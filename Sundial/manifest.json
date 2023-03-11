@@ -12,9 +12,18 @@
     "48" : "images/Sundial_logo_48.png",
     "128" : "images/Sundial_logo_128.png"
   },
+  "commands" : {
+    "toggle-sundial" : {
+      "suggested_key" : {
+        "default" : "Alt+O"
+      },
+      "description" : "Toggle Sundial"
+    }
+  },
   "permissions": ["storage", "management"],
   "content_scripts":[{
     "js" : ["scripts/contents.js"],
+    "css" : ["styles/contents.css"],
     "matches" : ["*://*/*"],
     "run_at" : "document_end"
   }],
