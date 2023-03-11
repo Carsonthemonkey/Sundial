@@ -57,11 +57,11 @@ const css = `
 `*/
 
 let hasEditedPage = false;
-
+const infoBoxText = document.querySelector("#info-box-text")
 const supportedTimezones = ["UTC","GMT","EST","CST","MST","PST","GMT","UTC"];
 const infoBox = document.createElement("div")
 infoBox.innerHTML = "<span id=\"info-box-text\">\"ORIGINAL TIME PLACEHOLDER\"</span>"
-const infoBoxText = document.querySelector("#info-box-text")
+console.log(infoBoxText)
 const cssLink = document.createElement("link")
 cssLink.href = "../styles/content.css"
 cssLink.type = "text/css"
@@ -185,18 +185,19 @@ function convertTime(timeString){
     }
     let shownDate = date.toLocaleTimeString()
     shownDate = shownDate.substring(0, shownDate.length - 6) + ' ' + shownDate.substring(shownDate.length - 2, shownDate.length)
-    return `<span class="original-time">${timeString}</span><span class=\"time-replace\">${shownDate}</span>`;
+    return `<span class="original-time">${timeString}</span><span class=\"time-replace\" id="${timeString}">${shownDate}</span>`; //the id thing is probably messy
     // <span class="info-box">"${timeString}"</span></span>
     //<span></span>
 }
 
 function showInfoBox(event){
-    const infoBox = document.querySelector("#info-box-container")
     //TODO: show info box with original time
     infoBox.style.setProperty("transition" , "opacity 0.2s ease-out, transform 0.2s ease-out")
+    const infoBoxText = document.querySelector("#info-box-text")
     console.log("hovering over time replace element")
     infoBox.style.visibility = "visible";
     infoBox.style.opacity = "1";
+    infoBoxText.innerHTML = `"${event.target.id}"`
     const element = event.target;
     const elementPosition = element.getBoundingClientRect();
     const infoBoxPosition = infoBox.getBoundingClientRect();
