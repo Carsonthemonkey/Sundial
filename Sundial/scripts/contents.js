@@ -24,13 +24,9 @@ const timeZones = {
 }
 
 const css = `
-
-.info-box{
-    visibility: hidden;
-    opacity: 0;
+.info-box {
     font-style: italic;
-    font-size: .98em;
-    white-space: nowrap;
+    font-size: 0.98em;
     font-weight: bold;
     font-family: 'Montserrat', sans-serif;
     padding: 12%;
@@ -41,19 +37,15 @@ const css = `
     text-decoration-thickness: 2px;
     border: 3px solid rgb(219, 219, 219);
     background-color: rgb(238, 238, 238);
-    background-color: rgb(#ff0000);
     color: rgb(9, 9, 9);
     border-radius: 0.5em;
-    transition: all 0.2s ease-out;
-
-    display: flex;
-    justify-content: space-between;
-    text-align: center;
-    position: absolute;
-    top: 0%;
+    position: fixed;
     left: 50%;
-    transform: translate(-50%, -100%);
-}
+    transform: translateX(-50%);
+    visibility: hidden;
+    opacity: 0;
+    transition: visibility 0s linear 0.2s, opacity 0.2s;
+  }
 
 .time-replace{
     border: 3px solid rgb(76, 91, 224);
@@ -62,11 +54,6 @@ const css = `
     position: relative;
 }
 
-.time-replace:hover .info-box{
-    opacity: 1;
-    visibility: visible;
-    transform: translate(-50%, -115%);
-}
 `
 
 let hasEditedPage = false;
@@ -75,6 +62,7 @@ const supportedTimezones = ["UTC","GMT","EST","CST","MST","PST","GMT","UTC"];
 
 const timeReplaceStyle = document.createElement('style');
 timeReplaceStyle.textContent = css;
+
 window.onload = startup;
 
 function startup(){
@@ -106,6 +94,13 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
 
 function sundial(){
     document.head.appendChild(timeReplaceStyle)
+    // add popup element to document head
+    const infoBox = document.createElement("span")
+    infoBox.classList.add("info-box")
+    infoBox.innerHTML = "ORIGINAL TIME"
+    document.body.appendChild(infoBox)
+
+
     hasEditedPage = true;
     const supportedElements = "*"
     const timeMatchRegExp = /(\d{1,2})(:\d{2})?(:\d{2})?\s?(A.?M.?\s? | P.?M.?\s?)(UTC|GMT|ES?T|CST|MST|PS?T|AKST|HST|AEDT|BST|EASTERN|PACIFIC|CENTRAL|JST|CT|IST|NZDT|MSK|CET|MOUNTAIN|GREENWICH|INDIAN|HAWAII)/gi;
@@ -127,6 +122,34 @@ function sundial(){
         }
     }
     hideOriginalTime();
+
+    const timeReplaceElements = document.querySelectorAll(".time-replace");
+    const originalTimeElements = document.querySelectorAll(".original-time");
+    for(let timeReplaceElement of timeReplaceElements){
+        timeReplaceElement.addEventListener("mouseover", (event) => {
+            console.log("hovering over time replace element")
+            let originalTime = "ORIGINAL TIME SET (ERROR)"
+            //set info box text to original time
+            infoBox.innerText = originalTime;
+            //show info box
+            infoBox.style.visibility = "visible";
+            infoBox.style.opacity = "1";
+            //place info box in the absolute center of the screen
+            // infoBox.style.top = "50%";
+            // infoBox.style.left = "50%";
+            // infoBox.style.transform = "translate(-50%, -50%)";
+            
+
+            //get position of time replace element
+            const timeReplaceElementPosition = event.target.getBoundingClientRect();
+            // //get position of info box
+            const infoBoxPosition = infoBox.getBoundingClientRect();
+            // //set info box position to be above time replace element
+            infoBox.style.top = (timeReplaceElementPosition.top - infoBoxPosition.height) + "px";
+            // //set info box position to be centered with time replace element
+            infoBox.style.left = (timeReplaceElementPosition.left + (timeReplaceElementPosition.width/2) - (infoBoxPosition.width/2)) + "px";
+        })
+    }
 }
 
 function timeToDate(timeString){
@@ -180,7 +203,8 @@ function convertTime(timeString){
     }
     let shownDate = date.toLocaleTimeString()
     shownDate = shownDate.substring(0, shownDate.length - 6) + ' ' + shownDate.substring(shownDate.length - 2, shownDate.length)
-    return `<span class="original-time">${timeString}</span><span class=\"time-replace\">${shownDate}<span class="info-box">"${timeString}"</span></span>`;
+    return `<span class="original-time">${timeString}</span><span class=\"time-replace\">${shownDate}</span>`;
+    // <span class="info-box">"${timeString}"</span></span>
     //<span></span>
 }
 
