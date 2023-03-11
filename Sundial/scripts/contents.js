@@ -70,7 +70,7 @@ function sundial(){
 
     hasEditedPage = true;
     const supportedElements = "*"
-    const timeMatchRegExp = /(\d{1,2})(:\d{2})?(:\d{2})?\s?((P.?M.?\s?)|(A.?M.?\s?))(UTC|GMT|ES?T|CST|MST|PS?T|AKST|HST|AEDT|BST|EASTERN|PACIFIC|CENTRAL|JST|CT|IST|NZDT|MSK|CET|MOUNTAIN|GREENWICH|INDIAN|HAWAII|ALASKA|HAWAII)/gi;
+    const timeMatchRegExp = /(\d{1,2})(:\d{2})?(:\d{2})?[\s,.]*((P.?M.?\s?)|(A.?M.?\s?))[\s,]*(UTC|GMT|ES?T|CST|MST|PS?T|AKST|HST|AEDT|BST|EASTERN|PACIFIC|CENTRAL|JST|CT|IST|NZDT|MSK|CET|MOUNTAIN|GREENWICH|INDIAN|HAWAII|ALASKA|HAWAII)/gi;
     const elements = document.body.querySelectorAll(supportedElements);
     for(let element of elements){
         for(let child of element.childNodes){
