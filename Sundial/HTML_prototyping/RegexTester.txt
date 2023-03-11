@@ -1,0 +1,43 @@
+
+Standard Time (US time zones)
+
+3:00pm Eastern Standard Time
+3:00pm Eastern
+3:00pm EST
+2:00pm Central Standard Time
+2:00pm Central
+2:00pm CST
+1:00pm Mountain Standard Time
+1:00pm Mountain
+1:00pm MST
+12:00pm Pacific Standard Time
+12:00pm Pacific
+12:00pm PST
+11:00am Alaska Standard Time
+11:00am Alaska
+11:00am AKST
+10:00am Hawaii Standard Time
+10:00am Hawaii
+10:00am HST
+Daylight Saving Time (US time zones)
+
+3:00pm Eastern Daylight Saving Time
+3:00pm Eastern Daylight Time
+3:00pm Eastern Daylight
+3:00pm EDT
+2:00pm Central Daylight Saving Time
+2:00pm Central Daylight Time
+2:00pm Central Daylight
+2:00pm CDT
+1:00pm Mountain Daylight Saving Time
+1:00pm Mountain Daylight Time
+1:00pm Mountain Daylight
+1:00pm MDT
+12:00pm Pacific Daylight Saving Time
+12:00pm Pacific Daylight Time
+12:00pm Pacific Daylight
+12:00pm PDT
+11:00am Alaska Daylight Saving Time
+11:00am Alaska Daylight Time
+11:00am Alaska Daylight
+11:00am AKDT
