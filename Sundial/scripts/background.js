@@ -22,6 +22,13 @@ chrome.management.onEnabled.addListener(() => {
 });
 
 
+chrome.commands.onCommand.addListener((command) => {
+  console.log("command: " + command);
+  if(command == "toggle-sundial"){
+    toggleExtension();
+  }
+});
+
 chrome.action.onClicked.addListener(toggleExtension);
 
 //add listener for when current tab is focused
