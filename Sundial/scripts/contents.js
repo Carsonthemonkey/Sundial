@@ -24,7 +24,7 @@ const timeZones = {
 }
 
 const ZONESREGEX = /(UTC|GMT|ES?T|CST|MST|PS?T|AKST|HST|AEDT|BST|EASTERN|PACIFIC|CENTRAL|JST|CT|IST|NZDT|MSK|CET|MOUNTAIN|GREENWICH|INDIAN|HAWAII|ALASKA|HAWAII)/gi;
-const AMPMREGEX = /((P\.?M\.?\s?)|(A\.?M\.?\s?))[\s,]*/gi
+const AMPMREGEX = /((P\.?M\.?\s?)|(A\.?M\.?\s?))[\s,()]*/gi
 const TIMEREGEX = /(\d{1,2})(:\d{2})?(:\d{2})?[\s,.]*/gi
 
 let hasEditedPage = false;
@@ -107,9 +107,7 @@ function sundial(){
 function timeToDate(timeString){
     timeString = timeString.replace(/\./g, '').toUpperCase();
     let timeMatch = timeString.match(new RegExp(TIMEREGEX.source), "i")[0];
-    let amPmMatch = timeString.match(new RegExp(AMPMREGEX.source), "i")[0];
     let zoneMatch = timeString.match(new RegExp(ZONESREGEX.source), "i")[0];
-    // let timeArray = timeString.split(/:|[\s]+/);
     let timeArray = timeMatch.split(/:|[\s]+/);
     let formattedDate = "01 Jan 2023 ";
     //add hours to the date
