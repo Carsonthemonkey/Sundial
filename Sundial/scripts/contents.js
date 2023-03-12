@@ -23,9 +23,13 @@ const timeZones = {
     "ALASKA" : "UTC-9"
 }
 
+const ZONESREGEX = /(UTC|GMT|ES?T|CST|MST|PS?T|AKST|HST|AEDT|BST|EASTERN|PACIFIC|CENTRAL|JST|CT|IST|NZDT|MSK|CET|MOUNTAIN|GREENWICH|INDIAN|HAWAII|ALASKA|HAWAII)/gi;
+const AMPMREGEX = /((P\.?M\.?\s?)|(A\.?M\.?\s?))[\s,]*/gi
+const TIMEREGEX = /(\d{1,2})(:\d{2})?(:\d{2})?[\s,.]*/gi
+
 let hasEditedPage = false;
 const infoBoxText = document.querySelector("#info-box-text")
-const supportedTimezones = ["UTC","GMT","EST","CST","MST","PST","GMT","UTC"];
+const SUPPORTEDTIMEZONES = ["UTC","GMT","EST","CST","MST","PST","GMT","UTC"];
 const infoBox = document.createElement("div")
 infoBox.innerHTML = "<span id=\"info-box-text\">\"ORIGINAL TIME PLACEHOLDER\"</span>"
 console.log(infoBoxText)
@@ -70,7 +74,10 @@ function sundial(){
 
     hasEditedPage = true;
     const supportedElements = "*"
-    const timeMatchRegExp = /(\d{1,2})(:\d{2})?(:\d{2})?[\s,.]*((P.?M.?\s?)|(A.?M.?\s?))[\s,]*(UTC|GMT|ES?T|CST|MST|PS?T|AKST|HST|AEDT|BST|EASTERN|PACIFIC|CENTRAL|JST|CT|IST|NZDT|MSK|CET|MOUNTAIN|GREENWICH|INDIAN|HAWAII|ALASKA|HAWAII)/gi;
+    // const timeMatchRegExp = /(\d{1,2})(:\d{2})?(:\d{2})?[\s,.]*((P.?M.?\s?)|(A.?M.?\s?))[\s,]*(UTC|GMT|ES?T|CST|MST|PS?T|AKST|HST|AEDT|BST|EASTERN|PACIFIC|CENTRAL|JST|CT|IST|NZDT|MSK|CET|MOUNTAIN|GREENWICH|INDIAN|HAWAII|ALASKA|HAWAII)/gi;
+    const timeMatchRegExp = new RegExp(`${TIMEREGEX.source}${AMPMREGEX.source}${ZONESREGEX.source}`, "gi")
+    console.log("timeMatchRegExp" + timeMatchRegExp)
+
     const elements = document.body.querySelectorAll(supportedElements);
     for(let element of elements){
         for(let child of element.childNodes){
@@ -99,9 +106,12 @@ function sundial(){
 
 function timeToDate(timeString){
     timeString = timeString.replace(/\./g, '').toUpperCase();
-    let timeArray = timeString.split(/:|[\s]+/);
+    let timeMatch = timeString.match(new RegExp(TIMEREGEX.source), "i")[0];
+    let amPmMatch = timeString.match(new RegExp(AMPMREGEX.source), "i")[0];
+    let zoneMatch = timeString.match(new RegExp(ZONESREGEX.source), "i")[0];
+    // let timeArray = timeString.split(/:|[\s]+/);
+    let timeArray = timeMatch.split(/:|[\s]+/);
     let formattedDate = "01 Jan 2023 ";
-    let readAllTimes = false;
     //add hours to the date
     if(timeString.match(/P.?M.?/i)){
         formattedDate += (parseInt(timeArray[0])%12 + 12) + ":";
@@ -111,29 +121,27 @@ function timeToDate(timeString){
     }
 
     //add minutes
-    if(!isNaN(timeArray[1]) && !readAllTimes){
+    if(timeArray.length > 1){
         formattedDate += timeArray[1] + ":"
     }
     else{
         formattedDate += "00:"
-        readAllTimes = true
     }
 
     //add seconds
-    if(!isNaN(timeArray[2]) && !readAllTimes){
+    if(timeArray.length > 3){
         formattedDate += timeArray[2] + ":"
     }
     else{
         formattedDate += "00 "
-        readAllTimes = true
     }
-    let tz = timeArray[timeArray.length - 1];
-    if(!supportedTimezones.includes(tz)){
+    let tz = zoneMatch.toUpperCase().trim();
+    if(!SUPPORTEDTIMEZONES.includes(tz)){
         formattedDate += timeZones[tz];
     }
     else{
         formattedDate += tz;
-    }
+    }   
     
     let date = new Date(Date.parse(formattedDate));
     return date
