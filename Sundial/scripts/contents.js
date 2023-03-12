@@ -28,10 +28,10 @@ const AMPMREGEX = /((P\.?M\.?\s?)|(A\.?M\.?\s?))[\s,()]*/gi
 const TIMEREGEX = /(\d{1,2})(:\d{2})?(:\d{2})?[\s,.]*/gi
 
 let hasEditedPage = false;
-const infoBoxText = document.querySelector("#info-box-text")
+const infoBoxText = document.querySelector("#sundial-info-box-text")
 const SUPPORTEDTIMEZONES = ["UTC","GMT","EST","CST","MST","PST","GMT","UTC"];
 const infoBox = document.createElement("div")
-infoBox.innerHTML = "<span id=\"info-box-text\">\"ORIGINAL TIME PLACEHOLDER\"</span>"
+infoBox.innerHTML = "<span id=\"sundial-info-box-text\">\"ORIGINAL TIME PLACEHOLDER\"</span>"
 console.log(infoBoxText)
 const cssLink = document.createElement("link")
 cssLink.href = "../styles/content.css"
@@ -68,7 +68,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
 
 function sundial(){
     document.head.appendChild(cssLink)
-    infoBox.id = "info-box-container"
+    infoBox.id = "sundial-info-box-container"
     document.body.appendChild(infoBox)
 
 
@@ -92,7 +92,7 @@ function sundial(){
             }            
         }
     }
-    timeReplacedArray = document.querySelectorAll(".time-replace");
+    timeReplacedArray = document.querySelectorAll(".sundial-time-replace");
     for (const timeReplace of timeReplacedArray) {
         console.log("adding event listener to time replace element")
         timeReplace.addEventListener("mouseover", showInfoBox);
@@ -100,7 +100,7 @@ function sundial(){
     }
     hideOriginalTime();
 
-    const timeReplaceElements = document.querySelectorAll(".time-replace");
+    const timeReplaceElements = document.querySelectorAll(".sundial-time-replace");
     const originalTimeElements = document.querySelectorAll(".original-time")
 }
 
@@ -154,13 +154,13 @@ function convertTime(timeString){
     }
     let shownDate = date.toLocaleTimeString()
     shownDate = shownDate.substring(0, shownDate.length - 6) + ' ' + shownDate.substring(shownDate.length - 2, shownDate.length)
-    return `<span class="original-time">${timeString}</span><span class=\"time-replace\" id="${timeString}">${shownDate}</span>`; //the id thing is probably messy
+    return `<span class="original-time">${timeString}</span><span class=\"sundial-time-replace\" id="${timeString}">${shownDate}</span>`; //the id thing is probably messy
 }
 
 function showInfoBox(event){
-    //TODO: show info box with original time
+    //TODO: show sundial-info box with original time
     infoBox.style.setProperty("transition" , "opacity 0.2s ease-out, transform 0.2s ease-out")
-    const infoBoxText = document.querySelector("#info-box-text")
+    const infoBoxText = document.querySelector("#sundial-info-box-text")
     console.log("hovering over time replace element")
     infoBox.style.visibility = "visible";
     infoBox.style.opacity = "1";
@@ -202,7 +202,7 @@ function hideOriginalTime(){
 
 function showReplacedTime(){
     console.log("showing replaced time")
-    const replacedTime = document.querySelectorAll('.time-replace');
+    const replacedTime = document.querySelectorAll('.sundial-time-replace');
     console.log(`found ${replacedTime.length} replaced times`)
     for(let time of replacedTime){
         time.style.display = "";
@@ -211,7 +211,7 @@ function showReplacedTime(){
 
 function hideReplacedTime(){
     console.log("hiding replaced time")
-    const replacedTime = document.querySelectorAll('.time-replace');
+    const replacedTime = document.querySelectorAll('.sundial-time-replace');
     for(let time of replacedTime){
         time.style.display = "none";
     }

@@ -1,13 +1,13 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300&display=swap');
 
-.time-replace{
+.sundial-time-replace{
     border: 3px solid rgb(76, 91, 224);
     border-radius: 6px;
     padding: 0.3%;
     position: relative;
 }
 
-#info-box-container{
+#sundial-info-box-container{
     transform: translate(-0%, 30%);
     visibility: hidden;
     opacity: 0; 
@@ -20,7 +20,7 @@
     padding: 1%;
     font-family: 'Montserrat', sans-serif;
 }
-#info-box-text{
+#sundial-info-box-text{
     color: rgb(0, 0, 0);
     font-style: italic;
     font-weight: bold;
@@ -31,12 +31,12 @@
 
 /* check for dark mode */
 @media (prefers-color-scheme: dark) {
-    #info-box-container{
+    #sundial-info-box-container{
         border: 2px solid rgb(106, 106, 255);
         background-color: rgb(77, 37, 121);
     }
     
-    #info-box-text{
+    #sundial-info-box-text{
         color: rgb(255, 255, 255);
         text-decoration-color: #ffffff;
     }
