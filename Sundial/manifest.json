@@ -22,10 +22,15 @@
   },
   "permissions": ["storage", "management"],
   "content_scripts":[{
-    "js" : ["scripts/contents.js"],
+    "js" : ["scripts/contents.js", "scripts/timezones.js"],
     "css" : ["styles/contents.css"],
     "matches" : ["*://*/*"],
     "run_at" : "document_end"
+  }],
+  "web_accessible_resources" : [
+    {
+    "resources"  : ["timezones.js"],
+    "matches" : ["*://*/*"]
   }],
 
   "background" : {

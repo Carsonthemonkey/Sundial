@@ -1,27 +1,7 @@
-const timeZones = {
-    "MOUNTAIN" : "MST",
-    "GREENWICH" : "GMT",
-    "INDIAN" : "UTC+5:30",
-    "CENTRAL" : "CST",
-    "CT" : "CST",
-    "AKST" : "UTC-9",
-    "HST" : "UTC-10",
-    "ET" : "EST",
-    "EASTERN" : "EST",
-    "PACIFIC" : "PST",
-    "PDT" : "UTC-7",
-    "EDT" : "UTC-4",
-    "PT" : "PST",
-    "CET" : "UTC+1",
-    "MSK" : "UTC+3",
-    "IST" : "UTC+5:30",
-    "JST" : "UTC+9",
-    "AEDT" : "UTC+11",
-    "NZDT" : "UTC+13",
-    "BST" : "UTC+1",
-    "HAWAII" : "UTC-10",
-    "ALASKA" : "UTC-9"
-}
+// import timezone functions
+import(chrome.runtime.getURL('scripts/timezones.js')).then((module) => {
+    const {SUPPORTEDTIMEZONES, TIMEZONES, getUserTimezone, timeToDate} = module;
+});
 
 const ZONESREGEX = /(UTC|GMT|ES?T|CST|MST|PS?T|AKST|HST|AEDT|BST|EASTERN|PACIFIC|CENTRAL|JST|CT|IST|NZDT|MSK|CET|MOUNTAIN|GREENWICH|INDIAN|HAWAII|ALASKA|HAWAII)/gi;
 const AMPMREGEX = /((P\.?M\.?\s?)|(A\.?M\.?\s?))[\s,()]*/gi
@@ -29,7 +9,6 @@ const TIMEREGEX = /(\d{1,2})(:\d{2})?(:\d{2})?[\s,.]*/gi
 
 let hasEditedPage = false;
 const infoBoxText = document.querySelector("#sundial-info-box-text")
-const SUPPORTEDTIMEZONES = ["UTC","GMT","EST","CST","MST","PST","GMT","UTC"];
 const infoBox = document.createElement("div")
 infoBox.innerHTML = "<span id=\"sundial-info-box-text\">\"ORIGINAL TIME PLACEHOLDER\"</span>"
 console.log(infoBoxText)
@@ -104,47 +83,6 @@ function sundial(){
     const originalTimeElements = document.querySelectorAll(".original-time")
 }
 
-function timeToDate(timeString){
-    timeString = timeString.replace(/\./g, '').toUpperCase();
-    let timeMatch = timeString.match(new RegExp(TIMEREGEX.source), "i")[0];
-    let zoneMatch = timeString.match(new RegExp(ZONESREGEX.source), "i")[0];
-    let timeArray = timeMatch.split(/:|[\s]+/);
-    let formattedDate = "01 Jan 2023 ";
-    //add hours to the date
-    if(timeString.match(/P.?M.?/i)){
-        formattedDate += (parseInt(timeArray[0])%12 + 12) + ":";
-    }
-    else{
-        formattedDate += parseInt(timeArray[0]%12) + ":";
-    }
-
-    //add minutes
-    if(timeArray.length > 1){
-        formattedDate += timeArray[1] + ":"
-    }
-    else{
-        formattedDate += "00:"
-    }
-
-    //add seconds
-    if(timeArray.length > 3){
-        formattedDate += timeArray[2] + ":"
-    }
-    else{
-        formattedDate += "00 "
-    }
-    let tz = zoneMatch.toUpperCase().trim();
-    if(!SUPPORTEDTIMEZONES.includes(tz)){
-        formattedDate += timeZones[tz];
-    }
-    else{
-        formattedDate += tz;
-    }   
-    
-    let date = new Date(Date.parse(formattedDate));
-    return date
-}
-
 function convertTime(timeString){
     console.log(timeString)
     
@@ -157,8 +95,13 @@ function convertTime(timeString){
     return `<span class="original-time">${timeString}</span><span class=\"sundial-time-replace\" id="${timeString}">${shownDate}</span>`; //the id thing is probably messy
 }
 
+function getUserTimezone(){
+    let now = new Date();
+    const timeZoneAbbreviation = now.toLocaleTimeString('en-US', { timeZoneName: 'short' }).split(' ');
+    return timeZoneAbbreviation[timeZoneAbbreviation.length - 1];
+}
+
 function showInfoBox(event){
-    //TODO: show sundial-info box with original time
     infoBox.style.setProperty("transition" , "opacity 0.2s ease-out, transform 0.2s ease-out")
     const infoBoxText = document.querySelector("#sundial-info-box-text")
     console.log("hovering over time replace element")
