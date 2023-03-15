@@ -70,6 +70,15 @@ function timeToDate(timeString){
         formattedDate += "00 "
     }
     
+    //* Timezone logic
+    //* if timezone respects daylight savings time:
+    //*      check if user is in the same daylights saving zone (daylight ore standard)
+    //*         if yes, convert directly as normal
+    //*         if no, convert to users timezone but in the other daylight saving zone
+    //* if timezone does not respect daylight savings time:
+    //*      if in supported timezone, convert directly as normal
+    //*      if not in supported timezone, convert via the TIMEZONES object and then convert directly
+
     let tz = zoneMatch.toUpperCase().trim();
     if(!SUPPORTEDTIMEZONES.includes(tz)){
         formattedDate += TIMEZONES[tz];
