@@ -1,5 +1,5 @@
 const assert = require('chai').assert;
-const timezones = require('../scripts/timezones'); //I should probably move some of these functions to a separate file
+const timezones = require('../scripts/timezones.js');
 
 
 //!This test only works if you are in Pacific Time
@@ -10,7 +10,7 @@ describe('getUserTimezone', function() {
 })
 
 //!This test only works if you are in Pacific Time and Daylight Savings Time
-describe('timToDate', function() { 
+describe('timeToDate', function() { 
     it('should return the direct conversion if both times are daylight savings', function(){
         assert.equal(timezones.timeToDate("10:00 PM PDT").toLocaleTimeString(), "10:00:00 PM");
     })

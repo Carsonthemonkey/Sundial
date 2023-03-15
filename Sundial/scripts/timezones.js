@@ -114,5 +114,5 @@ function isDaylightSavingTime(timezone){
     return timezone === "PDT" || timezone === "PST" || timezone === "EDT" || timezone === "EST";
 }
 
-//export modules
-// module.exports = {getUserTimezone, timeToDate};
+//export modules (This causes an error in chrome, but it doesn't seem to break anything)
+module.exports = {getUserTimezone, timeToDate};
