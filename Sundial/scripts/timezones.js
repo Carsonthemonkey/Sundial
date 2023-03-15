@@ -25,12 +25,21 @@ const TIMEZONES = {
     "ALASKA" : "UTC-9"
 }
 
+/**
+ * Returns the timezone of the user in the form PT, PST, etc.
+ * @returns {string} The timezone of the user
+ */
 function getUserTimezone(){
     let now = new Date();
     const timeZoneAbbreviation = now.toLocaleTimeString('en-US', { timeZoneName: 'short' }).split(' ');
     return timeZoneAbbreviation[timeZoneAbbreviation.length - 1];
 }
 
+/**
+* Converts a string representation of time to a date object
+* @param {string} timeString - the time string to be converted
+* @returns {Date} the date object
+*/
 function timeToDate(timeString){
     timeString = timeString.replace(/\./g, '').toUpperCase();
     let timeMatch = timeString.match(new RegExp(TIMEREGEX.source), "i")[0];
