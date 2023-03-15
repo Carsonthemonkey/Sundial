@@ -1,11 +1,6 @@
 // import timezone functions
-import(chrome.runtime.getURL('scripts/timezones.js')).then((module) => {
-    const {SUPPORTEDTIMEZONES, TIMEZONES, getUserTimezone, timeToDate} = module;
-});
+import(chrome.runtime.getURL('scripts/timezones.js'))
 
-const ZONESREGEX = /(UTC|GMT|ES?T|CST|MST|PS?T|AKST|HST|AEDT|BST|EASTERN|PACIFIC|CENTRAL|JST|CT|IST|NZDT|MSK|CET|MOUNTAIN|GREENWICH|INDIAN|HAWAII|ALASKA|HAWAII)/gi;
-const AMPMREGEX = /((P\.?M\.?\s?)|(A\.?M\.?\s?))[\s,()]*/gi
-const TIMEREGEX = /(\d{1,2})(:\d{2})?(:\d{2})?[\s,.]*/gi
 
 let hasEditedPage = false;
 const infoBoxText = document.querySelector("#sundial-info-box-text")
@@ -86,7 +81,7 @@ function sundial(){
 function convertTime(timeString){
     console.log(timeString)
     
-    let date = timeToDate(timeString);
+    let date = timeToDate(timeString, true);
     if(date.toDateString() != "Sun Jan 01 2023"){
         return timeString; 
     }

@@ -1,3 +1,6 @@
+const ZONESREGEX = /(UTC|GMT|ES?T|CST|MST|PS?T|AKST|HST|AEDT|BST|EASTERN|PACIFIC|CENTRAL|JST|CT|IST|NZDT|MSK|CET|MOUNTAIN|GREENWICH|INDIAN|HAWAII|ALASKA|HAWAII)/gi;
+const AMPMREGEX = /((P\.?M\.?\s?)|(A\.?M\.?\s?))[\s,()]*/gi
+const TIMEREGEX = /(\d{1,2})(:\d{2})?(:\d{2})?[\s,.]*/gi
 const SUPPORTEDTIMEZONES = ["UTC","GMT","EST","CST","MST","PST","GMT","UTC"];
 const SAVINGSTIMEZONES = ["PDT","PST","EDT","EST","CST", "CDT", "MST", "MDT", "AKST", "AKDT",];
 const TIMEZONES = {
@@ -36,11 +39,20 @@ function getUserTimezone(){
 }
 
 /**
+ * Take in a timezone code that respects daylight savings time and finds whether it is daylight or standard time
+ * @param {string} timezone - the timezone code to check
+ * @returns {boolean} true if it is daylight time, false if it is standard time
+ */
+function isDaylightTime(timeZoneString){
+    return timeZoneString.contains("S") //this may not work for all cases
+}
+
+/**
 * Converts a string representation of time to a date object
 * @param {string} timeString - the time string to be converted
 * @returns {Date} the date object
 */
-function timeToDate(timeString){
+function timeToDate(timeString, observesDaylightSavings){
     timeString = timeString.replace(/\./g, '').toUpperCase();
     let timeMatch = timeString.match(new RegExp(TIMEREGEX.source), "i")[0];
     let zoneMatch = timeString.match(new RegExp(ZONESREGEX.source), "i")[0];
@@ -80,6 +92,12 @@ function timeToDate(timeString){
     //*      if not in supported timezone, convert via the TIMEZONES object and then convert directly
 
     let tz = zoneMatch.toUpperCase().trim();
+
+    if (SAVINGSTIMEZONES.includes(tz)){
+        let userTz = getUserTimezone();
+        if(isDaylightSavingTime(userTz) && isDaylightSavingTime(tz)){
+        }
+    }
     if(!SUPPORTEDTIMEZONES.includes(tz)){
         formattedDate += TIMEZONES[tz];
     }
@@ -97,4 +115,4 @@ function isDaylightSavingTime(timezone){
 }
 
 //export modules
-module.exports = {SUPPORTEDTIMEZONES, TIMEZONES, getUserTimezone, timeToDate};
+// module.exports = {getUserTimezone, timeToDate};
