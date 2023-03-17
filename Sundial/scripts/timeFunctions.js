@@ -28,7 +28,51 @@ export function convertToUserTime(timeString, keepInDaylightZone){
     let zoneMatch = timeString.match(new RegExp(ZONESREGEX.source), "i")[0];
     let timeArray = timeMatch.split(/:|[\s]+/);
     let now = Temporal.Now.plainDate('iso8601');
-    console.log(now.day);
+    let pageTz = Temporal.TimeZone.from(zoneMatch);
+    let originalTime = {
+        hour: timeArray[0]%12,
+        minute: 0,
+        second: 0,
+        millisecond: 0,
+        microsecond: 0,
+        nanosecond: 0
+    };
+    //assign values from the time array to the object
+    let keys = Object.keys(originalTime);
+    for (let i = 1; i < timeArray.length-1; i++) {
+        originalTime[keys[i]] = parseInt(timeArray[i]);
+    }
+
+    //if the time is in the afternoon, add 12 to the hour
+    if(timeString.match(/P\.?M\.?/i)){
+        originalTime.hour += 12;
+    }
+    // console.log(originalTime);
+    
+    //create a plaindate object for the pages timezone
+    let pageTime = Temporal.PlainDateTime.from({
+        year: now.year,
+        month: now.month,
+        day: now.day,
+        hour: originalTime.hour,
+        minute: originalTime.minute,
+        second: originalTime.second,
+        millisecond: originalTime.millisecond,
+        microsecond: originalTime.microsecond,
+        nanosecond: originalTime.nanosecond
+    })
+
+    //create a zoneddatetime object for the pages timezone
+    let pageZonedTime = pageTime.toZonedDateTime(pageTz);
+    //convert the zoneddatetime object to the user's timezone
+    let userZonedTime = pageZonedTime.withTimeZone(Temporal.Now.timeZone());
+    return userZonedTime
 }
 
-convertToUserTime("8 pm EST", true);
+console.log(convertToUserTime("8:12:34 pm EST", true).toString());
+// console.log( Temporal.Now.plainDate('iso8601').toString() );
+//create temporal timezone object
+/*try{
+    let timeZone = Temporal.TimeZone.from('EDT');
+    console.log(timeZone.toString());
+}catch(e){console.error('EDT is not a supported timezone')}*/
