@@ -115,4 +115,3 @@ function isDaylightSavingTime(timezone){
 }
 
 //export modules (This causes an error in chrome, but it doesn't seem to break anything)
-module.exports = {getUserTimezone, timeToDate};
