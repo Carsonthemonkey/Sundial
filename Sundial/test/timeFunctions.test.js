@@ -24,7 +24,7 @@ describe('convertToUserTime', function() {
             // assert.equal(timeFunctions.convertToUserTime(t, false), time);
         // }
     });
-    it('should convet to the standard time when keepInDaylightZone is true' , function() { //!Note that this test assumes you are in Pacific daylight time
+    it('should convert to the standard time when keepInDaylightZone is true' , function() { //!Note that this test assumes you are in Pacific daylight time
         let timeString = "8 pm EST";
         let time = Temporal.ZonedDateTime.from({timeZone: 'America/Los_Angeles', year: 2023, month: 1, day: 1, hour: 17, minute: 0, second: 0, millisecond: 0, microsecond: 0, nanosecond: 0});
         assert.equal(timeFunctions.convertToUserTime(timeString, true), time);

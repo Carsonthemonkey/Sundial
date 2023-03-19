@@ -22,10 +22,21 @@ const TIMEZONES = {
     "ALASKA" : "-09:00",
 }
 
+const DAYLIGHTTIMEZONES = {
+    "PDT" : "-07:00",
+    "EDT" : "-04:00",
+    "AKDT" : "-08:00",
+    "MDT" : "-06:00",
+    "EASTERN DAYLIGHT" : "-04:00",
+    "PACIFIC DAYLIGHT" : "-07:00",
+    "CENTRAL DAYLIGHT" : "-05:00",
+    "MOUNTAIN DAYLIGHT" : "-06:00",
+    "ALASKA DAYLIGHT" : "-08:00",
+}
+
 const ZONESREGEX = /(UTC|GMT|ES?T|CST|MST|PS?T|AKST|HST|AEDT|BST|EASTERN|PACIFIC|CENTRAL|JST|CT|IST|NZDT|MSK|CET|MOUNTAIN|GREENWICH|INDIAN|HAWAII|ALASKA|HAWAII)/gi;
 const AMPMREGEX = /((P\.?M\.?\s?)|(A\.?M\.?\s?))[\s,()]*/gi
 const TIMEREGEX = /(\d{1,2})(:\d{2})?(:\d{2})?[\s,.]*/gi
-
 
 
 /**
@@ -46,7 +57,6 @@ export function convertToUserTime(timeString, keepInDaylightZone){
     timeString = timeString.replace(/\./g, '').toUpperCase();
     let timeMatch = timeString.match(new RegExp(TIMEREGEX.source), "i")[0];
     let zoneMatch = timeString.match(new RegExp(ZONESREGEX.source), "i")[0];
-    // console.log("zoneMatch: " + zoneMatch);
     let timeArray = timeMatch.split(/:|[\s]+/);
     let now = Temporal.Now.plainDate('iso8601');
     let pageTz;
@@ -118,16 +128,4 @@ for (const tz of SUPPORTEDTIMEZONES) {
     }
 }
 
-// try{let tzTest = console.log(Temporal.TimeZone.from('INDIAN'));}
-// catch(e){console.error(`error, timezone ${'INDIAN'} did not work`)}
-// try{
-//     console.log(convertToUserTime("5:20 pm PDT", true).toString());
-// }catch(e){
-//     console.log("error, timezone did not work")
-// }
-// console.log( Temporal.Now.plainDate('iso8601').toString() );
-//create temporal timezone object
-/*try{
-    let timeZone = Temporal.TimeZone.from('EDT');
-    console.log(timeZone.toString());
-}catch(e){console.error('EDT is not a supported timezone')}*/
+console.log(convertToUserTime("11:00 am PST", true).toString());
