@@ -1,4 +1,5 @@
-// import the Temporal module
-Temporal = require('@js-temporal/polyfill');
 
-console.log('Initialization complete', Temporal.Now.instant());
+//     console.log(convertToUserTime("5:20 pm PDT", true).toString());
+// }catch(e){
+//     console.log("error, timezone did not work")
+// }

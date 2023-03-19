@@ -2,6 +2,26 @@ import { Temporal } from '@js-temporal/polyfill';
 import moment from 'moment-timezone';
 
 //CONSTANTS
+const SUPPORTEDTIMEZONES = ["UTC","GMT","EST","CST","MST","PST","GMT","UTC", "GREENWICH", "HST", "CET", "IST", "JST", "BST"];
+
+const TIMEZONES = {
+    "MOUNTAIN" : "MST",
+    "INDIAN" : "IST",
+    "CENTRAL" : "CST",
+    "CT" : "CST",
+    "AKST" : "-09:00",
+    "ET" : "EST",
+    "EASTERN" : "EST",
+    "PACIFIC" : "PST",
+    "PDT" : "UTC-7",
+    "EDT" : "UTC-4",
+    "PT" : "PST",
+    "MSK" : "+03:00",
+    "AEDT" : "+11:00",
+    "NZDT" : "+13:00",
+    "ALASKA" : "-09:00",
+}
+
 const ZONESREGEX = /(UTC|GMT|ES?T|CST|MST|PS?T|AKST|HST|AEDT|BST|EASTERN|PACIFIC|CENTRAL|JST|CT|IST|NZDT|MSK|CET|MOUNTAIN|GREENWICH|INDIAN|HAWAII|ALASKA|HAWAII)/gi;
 const AMPMREGEX = /((P\.?M\.?\s?)|(A\.?M\.?\s?))[\s,()]*/gi
 const TIMEREGEX = /(\d{1,2})(:\d{2})?(:\d{2})?[\s,.]*/gi
@@ -26,9 +46,17 @@ export function convertToUserTime(timeString, keepInDaylightZone){
     timeString = timeString.replace(/\./g, '').toUpperCase();
     let timeMatch = timeString.match(new RegExp(TIMEREGEX.source), "i")[0];
     let zoneMatch = timeString.match(new RegExp(ZONESREGEX.source), "i")[0];
+    // console.log("zoneMatch: " + zoneMatch);
     let timeArray = timeMatch.split(/:|[\s]+/);
     let now = Temporal.Now.plainDate('iso8601');
-    let pageTz = Temporal.TimeZone.from(zoneMatch);
+    let pageTz;
+    if(SUPPORTEDTIMEZONES.includes(zoneMatch)){
+        pageTz = Temporal.TimeZone.from(zoneMatch);
+    }
+    else{
+        // console.log(`transforming ${zoneMatch} to ${TIMEZONES[zoneMatch]}`)
+        pageTz = Temporal.TimeZone.from(TIMEZONES[zoneMatch]);
+    }
     let originalTime = {
         hour: timeArray[0]%12,
         minute: 0,
@@ -37,6 +65,7 @@ export function convertToUserTime(timeString, keepInDaylightZone){
         microsecond: 0,
         nanosecond: 0
     };
+    
     //assign values from the time array to the object
     let keys = Object.keys(originalTime);
     for (let i = 1; i < timeArray.length-1; i++) {
@@ -69,7 +98,33 @@ export function convertToUserTime(timeString, keepInDaylightZone){
     return userZonedTime
 }
 
-console.log(convertToUserTime("8:12:34 pm EST", true).toString());
+//get keys from the TIMEZONES object
+const zones = Object.keys(TIMEZONES);
+for (const tz of zones) {
+    try{
+        convertToUserTime("5:20 pm " + tz, true).toString();
+        // console.log("success, timezone worked: " + tz)
+    }catch(e){
+        console.error("error, timezone did not work: " + tz);
+    }
+}
+console.log("now testing the supported timezones");
+for (const tz of SUPPORTEDTIMEZONES) {
+    try{
+        convertToUserTime("5:20 pm " + tz, true).toString();
+        // console.log("success, timezone worked: " + tz)
+    }catch(e){
+        // console.error("error, timezone did not work");
+    }
+}
+
+// try{let tzTest = console.log(Temporal.TimeZone.from('INDIAN'));}
+// catch(e){console.error(`error, timezone ${'INDIAN'} did not work`)}
+// try{
+//     console.log(convertToUserTime("5:20 pm PDT", true).toString());
+// }catch(e){
+//     console.log("error, timezone did not work")
+// }
 // console.log( Temporal.Now.plainDate('iso8601').toString() );
 //create temporal timezone object
 /*try{
